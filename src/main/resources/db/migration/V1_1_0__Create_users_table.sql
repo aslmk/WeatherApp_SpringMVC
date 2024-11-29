@@ -1,0 +1,1 @@
+CREATE TABLE Users (ID int, Login VARCHAR, Password VARCHAR);

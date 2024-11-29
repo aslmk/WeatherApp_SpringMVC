@@ -1,0 +1,1 @@
+CREATE TABLE Sessions (ID VARCHAR, UserId int, ExpiresAt DATE);

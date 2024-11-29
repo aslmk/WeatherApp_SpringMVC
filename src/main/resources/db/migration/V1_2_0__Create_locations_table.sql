@@ -1,0 +1,1 @@
+CREATE TABLE Locations (ID int, Name VARCHAR, UsedId int, Latitude DECIMAL, Longitude DECIMAL);

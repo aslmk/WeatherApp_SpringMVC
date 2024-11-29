@@ -20,6 +20,6 @@ public class Locations {
     private BigDecimal longitude;
 
     @ManyToOne(targetEntity = Users.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "UserId", referencedColumnName = "id")
+    @JoinColumn(name = "UserId", referencedColumnName = "ID")
     private Users user;
 }

@@ -1,1 +1,6 @@
-CREATE TABLE Sessions (ID VARCHAR, UserId int, ExpiresAt DATE);
+CREATE TABLE Sessions (
+    ID VARCHAR PRIMARY KEY,
+    UserId INTEGER,
+    ExpiresAt TIMESTAMP,
+    FOREIGN KEY (UserId) REFERENCES Users(ID)
+                      );

@@ -1,1 +1,5 @@
-CREATE TABLE Users (ID int, Login VARCHAR, Password VARCHAR);
+CREATE TABLE Users (
+    ID INTEGER PRIMARY KEY,
+    Login VARCHAR NOT NULL,
+    Password VARCHAR NOT NULL
+                   );

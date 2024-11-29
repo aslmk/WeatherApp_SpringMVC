@@ -1,6 +1,6 @@
 CREATE TABLE Sessions (
-    ID VARCHAR PRIMARY KEY,
+    ID VARCHAR(255) PRIMARY KEY,
     UserId INTEGER,
     ExpiresAt TIMESTAMP,
-    FOREIGN KEY (UserId) REFERENCES Users(ID)
+    FOREIGN KEY (UserId) REFERENCES Users (ID)
                       );

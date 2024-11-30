@@ -1,13 +1,11 @@
 package com.aslmk.dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import lombok.*;
 
 
-
+@Data
 public class UsersDto {
-    private int id;
+    private long id;
     private String login;
     private String password;
 }

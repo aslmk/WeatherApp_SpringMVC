@@ -16,11 +16,10 @@ public class UsersServiceImpl implements UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public void saveUser(UsersDto usersDto) {
+    public Users saveUser(UsersDto usersDto) {
         Users users = new Users();
         users.setLogin(usersDto.getLogin());
         users.setPassword(usersDto.getPassword());
-        System.out.println(users.getId());
-        usersRepository.save(users);
+        return usersRepository.save(users);
     }
 }

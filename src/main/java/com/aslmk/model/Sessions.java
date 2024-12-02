@@ -11,12 +11,11 @@ import java.time.LocalDateTime;
 @Setter
 public class Sessions {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 
     @ManyToOne(targetEntity = Users.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "UserId", referencedColumnName = "ID")
+    @JoinColumn(name = "userid", referencedColumnName = "ID")
     private Users user;
 
-    private LocalDateTime expiresAt;
+    private LocalDateTime expiresat;
 }

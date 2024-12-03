@@ -5,7 +5,10 @@ import com.aslmk.model.Sessions;
 import com.aslmk.model.Users;
 import com.aslmk.service.SessionService;
 import com.aslmk.service.UsersService;
+import com.aslmk.util.CookieUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,23 +55,39 @@ public class AuthorizationController {
     }
 
     @PostMapping("/login/save")
-    public String login(@ModelAttribute("user") UsersDto user, HttpServletRequest request, Model model) {
+    public String login(@ModelAttribute("user") UsersDto user,
+                        HttpServletRequest request,
+                        HttpServletResponse response,
+                        Model model) {
         HttpSession httpSession = request.getSession(false);
+        Sessions dbSession = null;
 
         if (httpSession != null) {
-            Sessions dbSession = sessionService.findById(httpSession.getId());
-            if (dbSession != null) {
+            dbSession = sessionService.findById(httpSession.getId());
+        } else {
+            String cookieSession = CookieUtil.getSessionIdFromCookie(request);
+            if (cookieSession != null) {
+                dbSession = sessionService.findById(cookieSession);
+            }
+        }
 
-                Users userEntity = dbSession.getUser();
+        if (dbSession != null) {
+            Users userEntity = dbSession.getUser();
 
-                if (user.getPassword().equals(userEntity.getPassword()) &&
-                user.getLogin().equals(userEntity.getLogin())) {
-                    return "redirect:/locations";
-                } else {
-                    model.addAttribute("error", "Invalid username or password");
+            if (user.getPassword().equals(userEntity.getPassword()) &&
+                    user.getLogin().equals(userEntity.getLogin())) {
+                if (httpSession == null) {
+                    httpSession = request.getSession(true);
+                    sessionService.saveSession(httpSession, userEntity);
+                    Cookie cookie = new Cookie("SESSION_ID", httpSession.getId());
+                    cookie.setMaxAge(25 * 60 * 60);
+                    cookie.setHttpOnly(true);
+                    response.addCookie(cookie);
                 }
+
+                return "redirect:/locations";
             } else {
-                model.addAttribute("error", "Session expired.");
+                model.addAttribute("error", "Invalid username or password");
             }
         } else {
             model.addAttribute("error", "Session not found.");

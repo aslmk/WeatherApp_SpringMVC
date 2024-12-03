@@ -63,7 +63,7 @@ public class AuthorizationController {
 
                 if (user.getPassword().equals(userEntity.getPassword()) &&
                 user.getLogin().equals(userEntity.getLogin())) {
-                    return "index";
+                    return "redirect:/locations";
                 } else {
                     model.addAttribute("error", "Invalid username or password");
                 }

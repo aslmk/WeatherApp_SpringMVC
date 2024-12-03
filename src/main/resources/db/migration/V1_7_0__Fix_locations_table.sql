@@ -1,0 +1,2 @@
+ALTER TABLE Locations ALTER COLUMN ID SET DEFAULT nextval('users_id_seq');
+ALTER TABLE Locations ALTER COLUMN ID SET NOT NULL;

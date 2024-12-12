@@ -14,7 +14,7 @@
                 <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${location.getLatitude()}"></h6>
                 <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${location.getLongitude()}"></h6>
                 <a href="#" class="card-link">Edit</a>
-                <a href="#" class="card-link">Delete</a>
+                <a th:href="@{/location-detail/{locationId}(locationId=${location.id})}" class="card-link">Details</a>
             </div>
         </div>
     </div>

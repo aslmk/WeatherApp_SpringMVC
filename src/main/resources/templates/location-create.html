@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<body layout:fragment="body">
+<div class="container">
+    <form th:action="@{/location/add}" th:object="${location}" method="post">
+        <div class="mb-2">
+            <label for="InputCityName" class="form-label">City name</label>
+            <input th:field="*{name}" type="text" class="form-control" id="InputCityName">
+        </div>
+        <button th:href="@{/location/add}" type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+</div>
+</body>
+</html>
+
+

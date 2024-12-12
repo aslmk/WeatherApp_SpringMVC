@@ -59,6 +59,7 @@ public class AuthorizationController {
                         HttpServletRequest request,
                         HttpServletResponse response,
                         Model model) {
+
         HttpSession httpSession = request.getSession(false);
         Sessions dbSession = null;
 
@@ -76,9 +77,12 @@ public class AuthorizationController {
 
             if (user.getPassword().equals(userEntity.getPassword()) &&
                     user.getLogin().equals(userEntity.getLogin())) {
+
                 if (httpSession == null) {
+
                     httpSession = request.getSession(true);
                     sessionService.saveSession(httpSession, userEntity);
+
                     Cookie cookie = new Cookie("SESSION_ID", httpSession.getId());
                     cookie.setMaxAge(25 * 60 * 60);
                     cookie.setHttpOnly(true);

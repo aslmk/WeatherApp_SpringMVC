@@ -7,4 +7,5 @@ import jakarta.servlet.http.HttpSession;
 public interface SessionService {
     void saveSession(HttpSession session, Users user);
     Sessions findById(String sessionId);
+    Sessions getValidSession(String sessionId);
 }

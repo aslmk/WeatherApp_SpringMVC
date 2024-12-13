@@ -16,10 +16,15 @@ public class UsersServiceImpl implements UsersService {
         this.usersRepository = usersRepository;
     }
 
-    public Users saveUser(UsersDto usersDto) {
+    public void saveUser(UsersDto usersDto) {
         Users users = new Users();
         users.setLogin(usersDto.getLogin());
         users.setPassword(usersDto.getPassword());
-        return usersRepository.save(users);
+        usersRepository.save(users);
+    }
+
+    @Override
+    public Users findByLogin(String login) {
+        return usersRepository.findByLogin(login);
     }
 }

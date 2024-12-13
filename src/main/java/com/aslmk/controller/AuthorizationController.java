@@ -37,13 +37,13 @@ public class AuthorizationController {
     }
 
     @PostMapping("/register/save")
-    public String registration(@ModelAttribute("user") UsersDto user,  HttpServletRequest request) {
-
-        Users userEntity = usersService.saveUser(user);
-
-        HttpSession session = request.getSession();
-        sessionService.saveSession(session, userEntity);
-
+    public String registration(@ModelAttribute("user") UsersDto user, Model model) {
+        try {
+            usersService.saveUser(user);
+            return "redirect:/login";
+        } catch (Exception e) {
+            model.addAttribute("error", "Registration failed");
+        }
         return "registration";
     }
 
@@ -60,43 +60,34 @@ public class AuthorizationController {
                         HttpServletResponse response,
                         Model model) {
 
-        HttpSession httpSession = request.getSession(false);
-        Sessions dbSession = null;
-
-        if (httpSession != null) {
-            dbSession = sessionService.findById(httpSession.getId());
-        } else {
-            String cookieSession = CookieUtil.getSessionIdFromCookie(request);
-            if (cookieSession != null) {
-                dbSession = sessionService.findById(cookieSession);
-            }
-        }
+        String sessionId = CookieUtil.getSessionIdFromCookie(request);
+        Sessions dbSession = (sessionId != null) ? sessionService.getValidSession(sessionId) : null;
 
         if (dbSession != null) {
-            Users userEntity = dbSession.getUser();
-
-            if (user.getPassword().equals(userEntity.getPassword()) &&
-                    user.getLogin().equals(userEntity.getLogin())) {
-
-                if (httpSession == null) {
-
-                    httpSession = request.getSession(true);
-                    sessionService.saveSession(httpSession, userEntity);
-
-                    Cookie cookie = new Cookie("SESSION_ID", httpSession.getId());
-                    cookie.setMaxAge(25 * 60 * 60);
-                    cookie.setHttpOnly(true);
-                    response.addCookie(cookie);
-                }
-
+            Users sessionUser = dbSession.getUser();
+            if (user.getLogin().equals(sessionUser.getLogin()) &&
+                    user.getPassword().equals(sessionUser.getPassword())) {
                 return "redirect:/locations";
-            } else {
-                model.addAttribute("error", "Invalid username or password");
             }
-        } else {
-            model.addAttribute("error", "Session not found.");
         }
 
+        Users userEntity = usersService.findByLogin(user.getLogin());
+
+        if (userEntity != null && user.getPassword().equals(userEntity.getPassword())) {
+            HttpSession httpSession = request.getSession();
+            sessionService.saveSession(httpSession, userEntity);
+
+            Cookie cookie = new Cookie("SESSION_ID", httpSession.getId());
+            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+
+            return "redirect:/locations";
+
+        }
+
+
+        model.addAttribute("error", "Invalid username or password!");
         return "login";
     }
 

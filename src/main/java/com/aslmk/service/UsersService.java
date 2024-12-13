@@ -5,5 +5,7 @@ import com.aslmk.model.Users;
 
 
 public interface UsersService {
-    Users saveUser(UsersDto usersDto);
+    void saveUser(UsersDto usersDto);
+
+    Users findByLogin(String login);
 }

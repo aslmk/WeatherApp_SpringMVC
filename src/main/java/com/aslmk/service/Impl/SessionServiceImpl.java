@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -37,5 +38,20 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public Sessions findById(String sessionId) {
         return sessionRepository.findById(sessionId).orElse(null);
+    }
+
+    @Override
+    public Sessions getValidSession(String sessionId) {
+        Optional<Sessions> optionalSession = sessionRepository.findById(sessionId);
+
+        if (optionalSession.isPresent()) {
+            Sessions session = optionalSession.get();
+            if (session.getExpiresat().isAfter(LocalDateTime.now())) {
+                return session;
+            } else {
+                sessionRepository.deleteById(sessionId);
+            }
+        }
+        return null;
     }
 }

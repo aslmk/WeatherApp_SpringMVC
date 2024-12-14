@@ -79,6 +79,7 @@ public class AuthorizationController {
 
             Cookie cookie = new Cookie("SESSION_ID", httpSession.getId());
             cookie.setMaxAge(24 * 60 * 60);
+            cookie.setPath("/");
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
 

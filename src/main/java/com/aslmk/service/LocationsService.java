@@ -14,4 +14,8 @@ public interface LocationsService {
     Locations findByUserId(Long userId);
 
     Locations findLocationById(int locationId);
+
+    void deleteLocationById(int locationId);
+
+    List<Locations> getLocationsByUserId(Long userId);
 }

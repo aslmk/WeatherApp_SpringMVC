@@ -9,15 +9,15 @@ import com.aslmk.openWeatherApi.OpenWeatherService;
 import com.aslmk.openWeatherApi.LocationCoordinatesResponse;
 import com.aslmk.service.LocationsService;
 import com.aslmk.service.SessionService;
+import com.aslmk.util.CookieUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -36,10 +36,17 @@ public class LocationController {
     }
 
     @GetMapping("/locations")
-    public String locationsPage(Model model) {
-        List<Locations> locationsList = locationsService.getLocations();
+    public String locationsPage(Model model, HttpServletRequest request) {
+        List<Locations> userLocations = Collections.emptyList();
 
-        model.addAttribute("locations", locationsList);
+        String sessionId = CookieUtil.getSessionIdFromCookie(request);
+        Sessions dbSession = (sessionId != null) ? sessionService.getValidSession(sessionId) : null;
+
+        if (dbSession != null) {
+            Users sessionUser = dbSession.getUser();
+            userLocations = locationsService.getLocationsByUserId(sessionUser.getId());
+        }
+        model.addAttribute("locations", userLocations);
 
         return "locations";
     }
@@ -62,6 +69,7 @@ public class LocationController {
         locationsDto.setLongitude(locationCoordinatesResponse.getCoord().getLon());
         locationsDto.setLatitude(locationCoordinatesResponse.getCoord().getLat());
         Sessions sessions = sessionService.findById(session.getId());
+
 
         if (sessions != null) user = sessions.getUser();
         // simple log here
@@ -96,5 +104,12 @@ public class LocationController {
         }
 
         return "location-details";
+    }
+
+    @GetMapping("location/{locationId}/delete")
+    public String deleteLocation(@PathVariable("locationId") int locationId) {
+        locationsService.deleteLocationById(locationId);
+
+        return "redirect:/locations";
     }
 }

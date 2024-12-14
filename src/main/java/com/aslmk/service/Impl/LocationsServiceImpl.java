@@ -8,6 +8,7 @@ import com.aslmk.service.LocationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,5 +48,15 @@ public class LocationsServiceImpl implements LocationsService {
     @Override
     public Locations findLocationById(int locationId) {
         return locationsRepository.findLocationById(locationId);
+    }
+
+    @Override
+    public void deleteLocationById(int locationId) {
+        locationsRepository.deleteById(locationId);
+    }
+
+    @Override
+    public List<Locations> getLocationsByUserId(Long userId) {
+        return locationsRepository.findAllByUserId(userId);
     }
 }

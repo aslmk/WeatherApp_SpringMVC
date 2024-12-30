@@ -19,7 +19,7 @@ public class Users {
     private String login;
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user")
     private List<Locations> locations = new ArrayList<>();
 
 }

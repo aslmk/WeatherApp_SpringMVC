@@ -13,7 +13,7 @@ public class Sessions {
     @Id
     private String id;
 
-    @ManyToOne(targetEntity = Users.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Users.class)
     @JoinColumn(name = "userid", referencedColumnName = "ID")
     private Users user;
 

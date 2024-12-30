@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<body layout:fragment="body">
+    <div class="container">
+        <div th:if="${location == null}" class="alert alert-danger">
+            <p>Location not found!</p>
+        </div>
+
+        <div th:unless="${location == null}" class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${location.getName()}"></h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${location.getLatitude()}"></h6>
+                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${location.getLongitude()}"></h6>
+                <a th:href="@{/location/{locationId}/delete(locationId=${location.id})}" class="card-link">Delete</a>
+                <a th:href="@{/location-detail/{locationId}(locationId=${location.id})}" class="card-link">Details</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

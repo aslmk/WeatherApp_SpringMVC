@@ -5,6 +5,7 @@ import com.aslmk.model.Locations;
 import com.aslmk.model.Users;
 import com.aslmk.repository.LocationsRepository;
 import com.aslmk.service.LocationsService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,12 +52,18 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
     @Override
-    public void deleteLocationById(int locationId) {
-        locationsRepository.deleteById(locationId);
+    @Transactional
+    public void deleteLocationById(long locationId) {
+        locationsRepository.deleteLocationById(locationId);
     }
 
     @Override
     public List<Locations> getLocationsByUserId(Long userId) {
         return locationsRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public Locations findLocationByCityName(Users user, String cityName) {
+        return locationsRepository.findLocationByNameAndUser(cityName, user);
     }
 }

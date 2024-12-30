@@ -15,7 +15,9 @@ public interface LocationsService {
 
     Locations findLocationById(int locationId);
 
-    void deleteLocationById(int locationId);
+    void deleteLocationById(long locationId);
 
     List<Locations> getLocationsByUserId(Long userId);
+
+    Locations findLocationByCityName(Users user, String cityName);
 }

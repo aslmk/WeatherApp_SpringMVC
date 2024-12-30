@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class LocationController {
         }
         model.addAttribute("locations", userLocations);
 
-        return "locations";
+        return "locations-page";
     }
 
     @GetMapping("/location/add")
@@ -107,9 +108,34 @@ public class LocationController {
     }
 
     @GetMapping("location/{locationId}/delete")
-    public String deleteLocation(@PathVariable("locationId") int locationId) {
+    public String deleteLocation(@PathVariable("locationId") long locationId) {
         locationsService.deleteLocationById(locationId);
 
         return "redirect:/locations";
+    }
+
+    @GetMapping("/location/search")
+    public String searchPage(Model model) {
+        model.addAttribute("location", new LocationsDto());
+        return "search-page";
+    }
+    @PostMapping("/location/search")
+    public String locationSearch(@ModelAttribute("location") LocationsDto locationsDto,
+                                 HttpServletRequest request,
+                                 Model model) {
+
+        String city = locationsDto.getName();
+        Locations location = null;
+        String sessionId = CookieUtil.getSessionIdFromCookie(request);
+        Sessions dbSession = (sessionId != null) ? sessionService.getValidSession(sessionId) : null;
+
+        if (dbSession != null) {
+            Users sessionUser = dbSession.getUser();
+            location = locationsService.findLocationByCityName(sessionUser, city);
+        }
+
+        model.addAttribute("location", location);
+
+        return "searched-locations";
     }
 }

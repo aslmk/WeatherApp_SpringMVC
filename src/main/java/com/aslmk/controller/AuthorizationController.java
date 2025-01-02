@@ -29,7 +29,7 @@ public class AuthorizationController {
 
 
     @GetMapping("/register")
-    public String registration(Model model, HttpServletRequest request) {
+    public String registration(Model model) {
         UsersDto usersDto = new UsersDto();
         model.addAttribute("user", usersDto);
 

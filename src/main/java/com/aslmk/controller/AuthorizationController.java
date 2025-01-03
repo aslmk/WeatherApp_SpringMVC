@@ -10,6 +10,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,8 @@ public class AuthorizationController {
     private UsersService usersService;
     private SessionService sessionService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public AuthorizationController(UsersService usersService, SessionService sessionService) {
         this.usersService = usersService;
@@ -65,8 +69,10 @@ public class AuthorizationController {
 
         if (dbSession != null) {
             Users sessionUser = dbSession.getUser();
+
             if (user.getLogin().equals(sessionUser.getLogin()) &&
-                    user.getPassword().equals(sessionUser.getPassword())) {
+                    passwordEncoder.matches(user.getPassword(), sessionUser.getPassword())) {
+
                 return "redirect:/locations";
             }
         }

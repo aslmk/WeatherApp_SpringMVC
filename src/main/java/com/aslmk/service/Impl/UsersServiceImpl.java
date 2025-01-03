@@ -5,11 +5,15 @@ import com.aslmk.model.Users;
 import com.aslmk.repository.UsersRepository;
 import com.aslmk.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UsersServiceImpl implements UsersService {
     private UsersRepository usersRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UsersServiceImpl(UsersRepository usersRepository) {
@@ -19,7 +23,7 @@ public class UsersServiceImpl implements UsersService {
     public void saveUser(UsersDto usersDto) {
         Users users = new Users();
         users.setLogin(usersDto.getLogin());
-        users.setPassword(usersDto.getPassword());
+        users.setPassword(passwordEncoder.encode(usersDto.getPassword()));
         usersRepository.save(users);
     }
 

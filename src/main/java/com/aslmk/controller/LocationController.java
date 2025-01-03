@@ -113,29 +113,4 @@ public class LocationController {
 
         return "redirect:/locations";
     }
-
-    @GetMapping("/location/search")
-    public String searchPage(Model model) {
-        model.addAttribute("location", new LocationsDto());
-        return "search-page";
-    }
-    @PostMapping("/location/search")
-    public String locationSearch(@ModelAttribute("location") LocationsDto locationsDto,
-                                 HttpServletRequest request,
-                                 Model model) {
-
-        String city = locationsDto.getName();
-        Locations location = null;
-        String sessionId = CookieUtil.getSessionIdFromCookie(request);
-        Sessions dbSession = (sessionId != null) ? sessionService.getValidSession(sessionId) : null;
-
-        if (dbSession != null) {
-            Users sessionUser = dbSession.getUser();
-            location = locationsService.findLocationByCityName(sessionUser, city);
-        }
-
-        model.addAttribute("location", location);
-
-        return "searched-locations";
-    }
 }

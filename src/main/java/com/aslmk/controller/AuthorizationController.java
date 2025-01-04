@@ -25,6 +25,8 @@ public class AuthorizationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private HttpSession httpSession;
 
     public AuthorizationController(UsersService usersService, SessionService sessionService) {
         this.usersService = usersService;
@@ -41,8 +43,14 @@ public class AuthorizationController {
     }
 
     @PostMapping("/register/save")
-    public String registration(@ModelAttribute("user") UsersDto user, Model model) {
+    public String registration(@ModelAttribute("user") UsersDto user, HttpServletRequest request, Model model) {
         try {
+            HttpSession session = request.getSession();
+
+            if (session != null) {
+                session.invalidate();
+            }
+
             usersService.saveUser(user);
             return "redirect:/login";
         } catch (Exception e) {
@@ -64,26 +72,19 @@ public class AuthorizationController {
                         HttpServletResponse response,
                         Model model) {
 
-        String sessionId = CookieUtil.getSessionIdFromCookie(request);
-        Sessions dbSession = (sessionId != null) ? sessionService.getValidSession(sessionId) : null;
+        Users userDB = usersService.findByLogin(user.getLogin());
 
-        if (dbSession != null) {
-            Users sessionUser = dbSession.getUser();
+        if (userDB != null && passwordEncoder.matches(user.getPassword(), userDB.getPassword())) {
+            HttpSession oldSession = request.getSession(false);
 
-            if (user.getLogin().equals(sessionUser.getLogin()) &&
-                    passwordEncoder.matches(user.getPassword(), sessionUser.getPassword())) {
-
-                return "redirect:/locations";
+            if (oldSession != null) {
+                oldSession.invalidate();
             }
-        }
 
-        Users userEntity = usersService.findByLogin(user.getLogin());
+            HttpSession newSession = request.getSession(true);
+            sessionService.saveSession(newSession, userDB);
 
-        if (userEntity != null && user.getPassword().equals(userEntity.getPassword())) {
-            HttpSession httpSession = request.getSession();
-            sessionService.saveSession(httpSession, userEntity);
-
-            Cookie cookie = new Cookie("SESSION_ID", httpSession.getId());
+            Cookie cookie = new Cookie("SESSION_ID", newSession.getId());
             cookie.setMaxAge(24 * 60 * 60);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
@@ -93,9 +94,8 @@ public class AuthorizationController {
 
         }
 
-
         model.addAttribute("error", "Invalid username or password!");
-        return "login";
+       return "login";
     }
 
 }

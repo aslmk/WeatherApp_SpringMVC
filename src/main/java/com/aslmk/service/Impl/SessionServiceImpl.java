@@ -54,4 +54,9 @@ public class SessionServiceImpl implements SessionService {
         }
         return null;
     }
+
+    @Override
+    public void deleteSession(String sessionId) {
+        sessionRepository.deleteById(sessionId);
+    }
 }

@@ -44,8 +44,8 @@ public class LocationController {
         Sessions dbSession = (sessionId != null) ? sessionService.getValidSession(sessionId) : null;
 
         if (dbSession != null) {
-            Users sessionUser = dbSession.getUser();
-            userLocations = locationsService.getLocationsByUserId(sessionUser.getId());
+            Users dbSessionUser = dbSession.getUser();
+            userLocations = locationsService.getLocationsByUserId(dbSessionUser.getId());
         }
         model.addAttribute("locations", userLocations);
 

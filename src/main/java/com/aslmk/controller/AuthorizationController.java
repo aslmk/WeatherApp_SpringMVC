@@ -25,8 +25,6 @@ public class AuthorizationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private HttpSession httpSession;
 
     public AuthorizationController(UsersService usersService, SessionService sessionService) {
         this.usersService = usersService;
@@ -83,6 +81,7 @@ public class AuthorizationController {
 
             HttpSession newSession = request.getSession(true);
             sessionService.saveSession(newSession, userDB);
+            newSession.setAttribute("userName", user.getLogin());
 
             Cookie cookie = new Cookie("SESSION_ID", newSession.getId());
             cookie.setMaxAge(24 * 60 * 60);
@@ -102,9 +101,8 @@ public class AuthorizationController {
     public String logout(HttpServletResponse response, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
-        sessionService.deleteSession(session.getId());
-
         if (session != null) {
+            sessionService.deleteSession(session.getId());
             session.invalidate();
         }
 

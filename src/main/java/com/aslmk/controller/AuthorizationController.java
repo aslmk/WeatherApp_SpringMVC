@@ -83,11 +83,10 @@ public class AuthorizationController {
             sessionService.saveSession(newSession, userDB);
             newSession.setAttribute("userName", user.getLogin());
 
-            Cookie cookie = new Cookie("SESSION_ID", newSession.getId());
-            cookie.setMaxAge(24 * 60 * 60);
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
+            CookieUtil.createCookie(response,
+                    "SESSION_ID",
+                    newSession.getId(),
+                    24 * 60 * 60); // 24 hours
 
             return "redirect:/locations";
 
@@ -106,11 +105,7 @@ public class AuthorizationController {
             session.invalidate();
         }
 
-        Cookie cookie = new Cookie("SESSION_ID", null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
+        CookieUtil.invalidateCookie(response, "SESSION_ID");
 
         return "redirect:/login";
     }

@@ -22,8 +22,9 @@ public class OpenWeatherService {
         return restTemplate.getForObject(locationCoordinates, LocationCoordinatesResponse.class);
     }
 
-    public LocationWeatherResponse getLocationWeather(BigDecimal latitude, BigDecimal longitude) {
+    public CurrentLocationDto getLocationWeatherByCoordinates(BigDecimal latitude, BigDecimal longitude) {
         String locationWeather = OpenWeatherApiUtil.getWeatherDataByLocationUrl(latitude, longitude);
-        return restTemplate.getForObject(locationWeather, LocationWeatherResponse.class);
+        return restTemplate.getForObject(locationWeather, CurrentLocationDto.class);
     }
+
 }

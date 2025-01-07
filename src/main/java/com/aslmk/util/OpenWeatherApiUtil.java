@@ -7,11 +7,11 @@ import java.math.BigDecimal;
 
 public class OpenWeatherApiUtil {
     public static String getLocationByNameUrl(String city) {
-        return BaseUrl.getBaseUrl() + "&q=" + city;
+        return BaseUrl.getBaseUrl() + "&q=" + city + "&units=metric";
     }
 
     public static String getWeatherDataByLocationUrl(BigDecimal lat, BigDecimal lon) {
-        return BaseUrl.getBaseUrl() + "&lat=" + lat.toString() + "&lon=" + lon.toString();
+        return BaseUrl.getBaseUrl() + "&lat=" + lat.toString() + "&lon=" + lon.toString() + "&units=metric";
     }
 
 }

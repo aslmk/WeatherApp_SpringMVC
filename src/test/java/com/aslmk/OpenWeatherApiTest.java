@@ -1,7 +1,6 @@
 package com.aslmk;
 
 import com.aslmk.openWeatherApi.LocationCoordinatesResponse;
-import com.aslmk.openWeatherApi.LocationWeatherResponse;
 import com.aslmk.openWeatherApi.OpenWeatherService;
 import com.aslmk.util.OpenWeatherApiUtil;
 import org.junit.jupiter.api.Assertions;

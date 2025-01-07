@@ -19,13 +19,6 @@ public class LocationsServiceImpl implements LocationsService {
         this.locationsRepository = locationsRepository;
     }
 
-
-    @Override
-    public List<Locations> getLocations() {
-        return locationsRepository.findAll();
-    }
-
-
     @Override
     public void save(LocationsDto locationsDto, Users user) {
         Locations locations = new Locations();
@@ -39,15 +32,6 @@ public class LocationsServiceImpl implements LocationsService {
 
     }
 
-    @Override
-    public Locations findByUserId(Long userId) {
-        return locationsRepository.findByUserId(userId);
-    }
-
-    @Override
-    public Locations findLocationById(int locationId) {
-        return locationsRepository.findLocationById(locationId);
-    }
 
     @Override
     @Transactional

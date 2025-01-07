@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,23 +67,17 @@ public class LocationController {
         return "locations-page";
     }
 
-    @GetMapping("/location/add")
-    public String addLocationForm(Model model) {
-        model.addAttribute("location", new LocationsDto());
-        return "location-create";
-    }
 
     @PostMapping("/location/add")
     public String addLocation(@ModelAttribute("location") LocationsDto locationsDto,
-                              HttpSession session) {
-        String city = locationsDto.getName();
+            @RequestParam("name") String name,
+            @RequestParam("lat") BigDecimal lat,
+            @RequestParam("lon") BigDecimal lon, HttpSession session) {
+
         Users user = null;
-
-        LocationCoordinatesResponse locationCoordinatesResponse = openWeatherService.getLocationCoordinates(city);
-        //CurrentLocationDto currentLocationCoordinates = openWeatherService.getLocationCoordinatesByCityName(city);
-
-        locationsDto.setLongitude(locationCoordinatesResponse.getCoord().getLon());
-        locationsDto.setLatitude(locationCoordinatesResponse.getCoord().getLat());
+        locationsDto.setName(name);
+        locationsDto.setLongitude(lon);
+        locationsDto.setLatitude(lat);
 
         Sessions sessions = sessionService.findById(session.getId());
 
@@ -96,6 +92,7 @@ public class LocationController {
 
         return "redirect:/locations";
     }
+
         @GetMapping("location/{locationId}/delete")
     public String deleteLocation(@PathVariable("locationId") long locationId) {
         locationsService.deleteLocationById(locationId);

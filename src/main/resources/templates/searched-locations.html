@@ -5,17 +5,32 @@
 
 <body layout:fragment="body">
     <div class="container">
-        <div th:if="${location == null}" class="alert alert-danger">
-            <p>Location not found!</p>
+        <div th:if="${locations.isEmpty()}" class="alert alert-danger">
+            <p>There is no location with such name!</p>
         </div>
 
-        <div th:unless="${location == null}" class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${location.getName()}"></h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${location.getLatitude()}"></h6>
-                <h6 class="card-subtitle mb-2 text-body-secondary" th:text="${location.getLongitude()}"></h6>
-                <a th:href="@{/location/{locationId}/delete(locationId=${location.id})}" class="card-link">Delete</a>
-                <a th:href="@{/location-detail/{locationId}(locationId=${location.id})}" class="card-link">Details</a>
+        <div class="row">
+            <div class="col-lg-6 mb-2" style="width: 18rem;" th:each="foundLocation : ${locations}">
+                <div class="card shadow-0 border">
+                    <div class="card-body p-4">
+                        <h4 class="mb-1 sfw-normal">
+                            <span th:text="${foundLocation.name}"></span>,
+                            <span th:text="${foundLocation.country}"></span>
+                        </h4>
+                        <p class="mb-2">
+                            <span th:text="${foundLocation.lat}"></span>
+                        </p>
+                        <p class="mb-2">
+                            <span th:text="${foundLocation.lon}"></span>
+                        </p>
+                    </div>
+                    <form th:action="@{/location/add}" th:object="${location}" method="post">
+                        <input type="hidden" th:name="name" th:value="${foundLocation.name}">
+                        <input type="hidden" th:name="lat" th:value="${foundLocation.lat}">
+                        <input type="hidden" th:name="lon" th:value="${foundLocation.lon}">
+                        <button type="submit" th:href="@{/location/add}">Add</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

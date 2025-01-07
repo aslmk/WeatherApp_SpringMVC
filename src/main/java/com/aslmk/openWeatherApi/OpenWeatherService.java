@@ -27,4 +27,9 @@ public class OpenWeatherService {
         return restTemplate.getForObject(locationWeather, CurrentLocationDto.class);
     }
 
+    public GeoCoordinatesDto[] getLocationsByNameGeoCodingAPI(String city) {
+        String locations = OpenWeatherApiUtil.getLocationsByNameUrl(city);
+        return restTemplate.getForObject(locations, GeoCoordinatesDto[].class);
+    }
+
 }

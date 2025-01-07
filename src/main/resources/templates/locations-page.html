@@ -22,6 +22,9 @@
                         <p>Feels like:
                             <strong><span th:text="${location.main.feelsLike}"></span>°C</strong>
                         </p>
+                        <p>Min. temp.:<strong><span th:text="${location.main.tempMin}"></span>°C</strong></p>
+                        <p>Max. temp.: <strong><span th:text="${location.main.tempMax}"></span>°C</strong></p>
+
                         <div class="d-flex flex-row align-items-center">
                             <p class="mb-0 me-4" th:text="${location.weather[0].description}"></p>
                             <img th:src="${location.weather[0].icon}">

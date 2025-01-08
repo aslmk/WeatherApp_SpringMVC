@@ -1,14 +1,13 @@
 package com.aslmk.service.Impl;
 
-import com.aslmk.dto.UsersDto;
 import com.aslmk.model.Sessions;
 import com.aslmk.model.Users;
 import com.aslmk.repository.SessionRepository;
 import com.aslmk.service.SessionService;
-import com.aslmk.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -58,5 +57,11 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public void deleteSession(String sessionId) {
         sessionRepository.deleteById(sessionId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteExpiredSessions(LocalDateTime expiresAt) {
+        sessionRepository.deleteExpiredSessions(expiresAt);
     }
 }

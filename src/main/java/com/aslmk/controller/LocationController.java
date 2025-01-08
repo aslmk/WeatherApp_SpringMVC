@@ -56,7 +56,7 @@ public class LocationController {
                 currentLocationDto.setId(location.getId());
 
                 currentLocationDto.getWeather()[0].setIcon(
-                        String.format("https://openweathermap.org/img/w/%s.png",
+                        String.format("https://openweathermap.org/img/wn/%s@2x.png",
                                 currentLocationDto.getWeather()[0].getIcon())
                 );
                 userLocationsData.add(currentLocationDto);
@@ -93,7 +93,7 @@ public class LocationController {
         return "redirect:/locations";
     }
 
-        @GetMapping("location/{locationId}/delete")
+    @GetMapping("location/{locationId}/delete")
     public String deleteLocation(@PathVariable("locationId") long locationId) {
         locationsService.deleteLocationById(locationId);
 

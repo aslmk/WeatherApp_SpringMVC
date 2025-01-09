@@ -17,7 +17,7 @@ public class Users {
     private long id;
     @Column(unique = true, nullable = false)
     private String login;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "user")

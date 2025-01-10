@@ -1,6 +1,7 @@
 package com.aslmk.controller;
 
 import com.aslmk.dto.LocationsDto;
+import com.aslmk.exception.LocationDoesNotExistsException;
 import com.aslmk.openWeatherApi.GeoCoordinatesDto;
 import com.aslmk.openWeatherApi.OpenWeatherService;
 import com.aslmk.service.LocationsService;
@@ -22,7 +23,7 @@ public class SearchController {
     private OpenWeatherService openWeatherService;
 
     @Autowired
-    public void SearchController(OpenWeatherService openWeatherService) {
+    public SearchController(OpenWeatherService openWeatherService) {
         this.openWeatherService = openWeatherService;
     }
 
@@ -34,14 +35,18 @@ public class SearchController {
     @PostMapping("/location/search")
     public String locationSearch(@ModelAttribute("location") LocationsDto locationsDto,
                                  Model model) {
+        try {
+            String city = locationsDto.getName();
 
-        String city = locationsDto.getName();
+            GeoCoordinatesDto[] geoCoordinatesDtos = openWeatherService.getLocationsByNameGeoCodingAPI(city);
 
-        GeoCoordinatesDto[] geoCoordinatesDtos = openWeatherService.getLocationsByNameGeoCodingAPI(city);
+            List<GeoCoordinatesDto> locations = new ArrayList<>(Arrays.asList(geoCoordinatesDtos));
 
-        List<GeoCoordinatesDto> locations = new ArrayList<>(Arrays.asList(geoCoordinatesDtos));
+            model.addAttribute("locations", locations);
+        } catch (LocationDoesNotExistsException e) {
+            model.addAttribute("error", e.getMessage());
+        }
 
-        model.addAttribute("locations", locations);
 
         return "searched-locations";
     }

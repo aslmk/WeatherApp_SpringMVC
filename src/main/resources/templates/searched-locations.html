@@ -5,10 +5,9 @@
 
 <body layout:fragment="body">
     <div class="container">
-        <div th:if="${locations.isEmpty()}" class="alert alert-danger">
-            <p>There is no location with such name!</p>
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
         </div>
-
         <div class="row">
             <div class="col-lg-6 mb-2" style="width: 18rem;" th:each="foundLocation : ${locations}">
                 <div class="card shadow-0 border">

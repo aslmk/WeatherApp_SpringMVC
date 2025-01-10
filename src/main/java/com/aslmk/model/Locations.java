@@ -15,8 +15,9 @@ public class Locations {
     private int id;
 
     private String name;
-
+    @Column(nullable = false, unique = true)
     private BigDecimal latitude;
+    @Column(nullable = false, unique = true)
     private BigDecimal longitude;
 
     @ManyToOne(targetEntity = Users.class)

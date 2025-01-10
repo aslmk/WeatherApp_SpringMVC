@@ -17,5 +17,6 @@ public class Sessions {
     @JoinColumn(name = "userid", referencedColumnName = "ID")
     private Users user;
 
+    @Column(nullable = false)
     private LocalDateTime expiresat;
 }

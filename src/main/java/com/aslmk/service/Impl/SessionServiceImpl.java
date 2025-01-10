@@ -1,5 +1,6 @@
 package com.aslmk.service.Impl;
 
+import com.aslmk.exception.SessionNotFoundException;
 import com.aslmk.model.Sessions;
 import com.aslmk.model.Users;
 import com.aslmk.repository.SessionRepository;
@@ -35,8 +36,10 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Sessions findById(String sessionId) {
-        return sessionRepository.findById(sessionId).orElse(null);
+    public Sessions findById(String sessionId) throws SessionNotFoundException {
+        return sessionRepository.findById(sessionId)
+                .orElseThrow(
+                        () ->new SessionNotFoundException("Session not found"));
     }
 
     @Override

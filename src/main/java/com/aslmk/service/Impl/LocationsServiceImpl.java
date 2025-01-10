@@ -1,12 +1,14 @@
 package com.aslmk.service.Impl;
 
 import com.aslmk.dto.LocationsDto;
+import com.aslmk.exception.LocationAlreadyAddedException;
 import com.aslmk.model.Locations;
 import com.aslmk.model.Users;
 import com.aslmk.repository.LocationsRepository;
 import com.aslmk.service.LocationsService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -20,16 +22,19 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
     @Override
-    public void save(LocationsDto locationsDto, Users user) {
-        Locations locations = new Locations();
+    public void save(LocationsDto locationsDto, Users user) throws LocationAlreadyAddedException {
+        try {
+            Locations locations = new Locations();
 
-        locations.setName(locationsDto.getName());
-        locations.setLatitude(locationsDto.getLatitude());
-        locations.setLongitude(locationsDto.getLongitude());
-        locations.setUser(user);
+            locations.setName(locationsDto.getName());
+            locations.setLatitude(locationsDto.getLatitude());
+            locations.setLongitude(locationsDto.getLongitude());
+            locations.setUser(user);
 
-        locationsRepository.save(locations);
-
+            locationsRepository.save(locations);
+        } catch (DataIntegrityViolationException e) {
+            throw new LocationAlreadyAddedException("You are already added this location.");
+        }
     }
 
 

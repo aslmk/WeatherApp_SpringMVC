@@ -1,8 +1,10 @@
 package com.aslmk.openWeatherApi;
 
+import com.aslmk.exception.LocationDoesNotExistsException;
 import com.aslmk.util.OpenWeatherApiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -27,9 +29,14 @@ public class OpenWeatherService {
         return restTemplate.getForObject(locationWeather, CurrentLocationDto.class);
     }
 
-    public GeoCoordinatesDto[] getLocationsByNameGeoCodingAPI(String city) {
+    public GeoCoordinatesDto[] getLocationsByNameGeoCodingAPI(String city) throws LocationDoesNotExistsException {
         String locations = OpenWeatherApiUtil.getLocationsByNameUrl(city);
-        return restTemplate.getForObject(locations, GeoCoordinatesDto[].class);
+        try {
+            return restTemplate.getForObject(locations, GeoCoordinatesDto[].class);
+        } catch (RestClientException e) {
+            throw new LocationDoesNotExistsException("There is no location with such name!");
+        }
     }
+
 
 }

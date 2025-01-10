@@ -1,0 +1,1 @@
+ALTER TABLE Locations ADD CONSTRAINT UniqueLocationCoordinatesConstraint UNIQUE (userid,latitude,longitude);

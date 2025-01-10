@@ -1,6 +1,7 @@
 package com.aslmk.controller;
 
 import com.aslmk.dto.UsersDto;
+import com.aslmk.exception.UserAlreadyExistsException;
 import com.aslmk.model.Sessions;
 import com.aslmk.model.Users;
 import com.aslmk.service.SessionService;
@@ -51,8 +52,8 @@ public class AuthorizationController {
 
             usersService.saveUser(user);
             return "redirect:/login";
-        } catch (Exception e) {
-            model.addAttribute("error", "Registration failed");
+        } catch (UserAlreadyExistsException e) {
+            model.addAttribute("error", e.getMessage());
         }
         return "registration";
     }

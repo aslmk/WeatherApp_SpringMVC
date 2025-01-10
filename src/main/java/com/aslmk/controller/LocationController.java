@@ -1,6 +1,8 @@
 package com.aslmk.controller;
 
 import com.aslmk.dto.LocationsDto;
+import com.aslmk.exception.LocationAlreadyAddedException;
+import com.aslmk.exception.SessionNotFoundException;
 import com.aslmk.model.Locations;
 import com.aslmk.model.Sessions;
 import com.aslmk.model.Users;
@@ -72,23 +74,23 @@ public class LocationController {
     public String addLocation(@ModelAttribute("location") LocationsDto locationsDto,
             @RequestParam("name") String name,
             @RequestParam("lat") BigDecimal lat,
-            @RequestParam("lon") BigDecimal lon, HttpSession session) {
+            @RequestParam("lon") BigDecimal lon,
+                              HttpSession session,
+                              Model model) {
 
-        Users user = null;
         locationsDto.setName(name);
         locationsDto.setLongitude(lon);
         locationsDto.setLatitude(lat);
 
-        Sessions sessions = sessionService.findById(session.getId());
+        try {
+            Sessions sessions = sessionService.findById(session.getId());
+            Users user = sessions.getUser();
+            locationsService.save(locationsDto, user);
 
-        if (sessions != null) user = sessions.getUser();
-        // simple log here
-        else System.out.println("Session not found");
-
-        if (user != null) locationsService.save(locationsDto, user);
-        // also simple log below ...
-        else System.out.println("User not found");
-
+        } catch (LocationAlreadyAddedException | SessionNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "searched-locations";
+        }
 
         return "redirect:/locations";
     }

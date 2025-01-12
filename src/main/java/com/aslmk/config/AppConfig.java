@@ -1,6 +1,7 @@
 package com.aslmk.config;
 
-import com.aslmk.filter.AuthFilter;
+import com.aslmk.filter.AuthorizedUsersFilter;
+import com.aslmk.filter.UnauthorizedUsersFilter;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -23,10 +24,18 @@ public class AppConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<AuthFilter> authFilter() {
-        FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new AuthFilter());
+    public FilterRegistrationBean<UnauthorizedUsersFilter> unauthorizedUsersFilter() {
+        FilterRegistrationBean<UnauthorizedUsersFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new UnauthorizedUsersFilter());
         registrationBean.addUrlPatterns("/locations", "/location/*");
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<AuthorizedUsersFilter> authorizedUsersFilter() {
+        FilterRegistrationBean<AuthorizedUsersFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new AuthorizedUsersFilter());
+        registrationBean.addUrlPatterns("/login/*", "/register/*");
         return registrationBean;
     }
 

@@ -27,7 +27,7 @@
 
                         <div class="d-flex flex-row align-items-center">
                             <p class="mb-0 me-4" th:text="${location.weather[0].description}"></p>
-                            <img th:src="${location.weather[0].icon}">
+                            <img th:src="@{${'https://openweathermap.org/img/wn/' + location.weather[0].icon + '@2x.png'}}">
                         </div>
                         <a th:href="@{/location/{locationId}/delete(locationId=${location.id})}" class="card-link">Delete</a>
                     </div>

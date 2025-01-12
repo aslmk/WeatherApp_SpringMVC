@@ -8,7 +8,6 @@ import com.aslmk.model.Sessions;
 import com.aslmk.model.Users;
 import com.aslmk.openWeatherApi.CurrentLocationDto;
 import com.aslmk.openWeatherApi.OpenWeatherService;
-import com.aslmk.openWeatherApi.LocationCoordinatesResponse;
 import com.aslmk.service.LocationsService;
 import com.aslmk.service.SessionService;
 import com.aslmk.util.CookieUtil;
@@ -25,9 +24,9 @@ import java.util.List;
 
 @Controller
 public class LocationController {
-    private LocationsService locationsService;
-    private OpenWeatherService openWeatherService;
-    private SessionService sessionService;
+    private final LocationsService locationsService;
+    private final OpenWeatherService openWeatherService;
+    private final SessionService sessionService;
 
     @Autowired
     public LocationController(LocationsService locationsService,
@@ -57,10 +56,6 @@ public class LocationController {
                 // Otherwise, this location will not be deleted from db.
                 currentLocationDto.setId(location.getId());
 
-                currentLocationDto.getWeather()[0].setIcon(
-                        String.format("https://openweathermap.org/img/wn/%s@2x.png",
-                                currentLocationDto.getWeather()[0].getIcon())
-                );
                 userLocationsData.add(currentLocationDto);
             }
         }

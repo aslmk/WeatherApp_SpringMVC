@@ -2,12 +2,10 @@ package com.aslmk.controller;
 
 import com.aslmk.dto.UsersDto;
 import com.aslmk.exception.UserAlreadyExistsException;
-import com.aslmk.model.Sessions;
 import com.aslmk.model.Users;
 import com.aslmk.service.SessionService;
 import com.aslmk.service.UsersService;
 import com.aslmk.util.CookieUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -21,8 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthorizationController {
-    private UsersService usersService;
-    private SessionService sessionService;
+    private final UsersService usersService;
+    private final SessionService sessionService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

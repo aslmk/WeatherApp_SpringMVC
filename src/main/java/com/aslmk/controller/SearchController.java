@@ -4,9 +4,6 @@ import com.aslmk.dto.LocationsDto;
 import com.aslmk.exception.LocationDoesNotExistsException;
 import com.aslmk.openWeatherApi.GeoCoordinatesDto;
 import com.aslmk.openWeatherApi.OpenWeatherService;
-import com.aslmk.service.LocationsService;
-import com.aslmk.service.SessionService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +17,7 @@ import java.util.List;
 
 @Controller
 public class SearchController {
-    private OpenWeatherService openWeatherService;
+    private final OpenWeatherService openWeatherService;
 
     @Autowired
     public SearchController(OpenWeatherService openWeatherService) {

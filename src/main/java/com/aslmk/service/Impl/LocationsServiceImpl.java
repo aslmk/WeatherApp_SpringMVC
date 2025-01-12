@@ -50,7 +50,7 @@ public class LocationsServiceImpl implements LocationsService {
     }
 
     @Override
-    public Locations findLocationByCityName(Users user, String cityName) {
-        return locationsRepository.findLocationByNameAndUser(cityName, user);
+    public Locations findLocationById(long locationId) {
+        return locationsRepository.findLocationById(locationId);
     }
 }

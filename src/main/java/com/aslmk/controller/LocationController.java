@@ -91,8 +91,18 @@ public class LocationController {
     }
 
     @GetMapping("location/{locationId}/delete")
-    public String deleteLocation(@PathVariable("locationId") long locationId) {
-        locationsService.deleteLocationById(locationId);
+    public String deleteLocation(@PathVariable("locationId") long locationId,
+                                 HttpServletRequest request) {
+
+        String sessionId = CookieUtil.getSessionIdFromCookie(request);
+
+        Locations targetLocation = locationsService.findLocationById(locationId);
+        Sessions currentSession = sessionService.findById(sessionId);
+        Users currentUser = currentSession.getUser();
+
+        if (targetLocation.getUser().getId() == currentUser.getId()) {
+            locationsService.deleteLocationById(locationId);
+        }
 
         return "redirect:/locations";
     }

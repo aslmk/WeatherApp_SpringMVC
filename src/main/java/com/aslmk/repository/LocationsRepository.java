@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface LocationsRepository extends JpaRepository<Locations, Integer> {
-    Locations findByUserId(long userId);
 
-    Locations findLocationById(int locationId);
+    Locations findLocationById(long locationId);
 
     List<Locations> findAllByUserId(long userId);
 

@@ -14,5 +14,5 @@ public interface LocationsService {
 
     List<Locations> getLocationsByUserId(Long userId);
 
-    Locations findLocationByCityName(Users user, String cityName);
+    Locations findLocationById(long locationId);
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
 
 
     @Autowired

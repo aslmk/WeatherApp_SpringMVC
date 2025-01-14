@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UsersServiceImpl implements UsersService {
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UsersServiceImpl(UsersRepository usersRepository) {
+    public UsersServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void saveUser(UsersDto usersDto) throws UserAlreadyExistsException {

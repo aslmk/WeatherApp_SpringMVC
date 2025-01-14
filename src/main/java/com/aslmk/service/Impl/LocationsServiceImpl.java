@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class LocationsServiceImpl implements LocationsService {
-    private LocationsRepository locationsRepository;
+    private final LocationsRepository locationsRepository;
 
     @Autowired
     public LocationsServiceImpl(LocationsRepository locationsRepository) {

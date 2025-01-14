@@ -9,10 +9,14 @@
             <p>You do not add any location!</p>
         </div>
         <div class="row">
-            <div class="col-lg-6 mb-2" style="width: 18rem;" th:each="location : ${locations}">
-                <div class="card shadow-0 border">
+            <div class="col-lg-3 mb-2"  th:each="location : ${locations}">
+                <div class="card shadow-0 border text-center">
                     <div class="card-body p-4">
-                        <h4 class="mb-1 sfw-normal">
+                        <div>
+                            <img th:src="@{${'https://openweathermap.org/img/wn/' + location.weather[0].icon + '@2x.png'}}">
+                            <p class="mb-1 me-4" th:text="${location.weather[0].description}"></p>
+                        </div>
+                        <h4 class="mb-2 sfw-normal">
                             <span th:text="${location.name}"></span>,
                             <span th:text="${location.sys.country}"></span>
                         </h4>
@@ -22,19 +26,13 @@
                         <p>Feels like:
                             <strong><span th:text="${location.main.feelsLike}"></span>°C</strong>
                         </p>
-                        <p>Min. temp.:<strong><span th:text="${location.main.tempMin}"></span>°C</strong></p>
+                        <p>Min. temp.: <strong><span th:text="${location.main.tempMin}"></span>°C</strong></p>
                         <p>Max. temp.: <strong><span th:text="${location.main.tempMax}"></span>°C</strong></p>
-
-                        <div class="d-flex flex-row align-items-center">
-                            <p class="mb-0 me-4" th:text="${location.weather[0].description}"></p>
-                            <img th:src="@{${'https://openweathermap.org/img/wn/' + location.weather[0].icon + '@2x.png'}}">
-                        </div>
-                        <a th:href="@{/location/{locationId}/delete(locationId=${location.id})}" class="card-link">Delete</a>
+                        <button th:href="@{/location/{locationId}/delete(locationId=${location.id})}" type="button" class="btn btn-outline-danger">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>

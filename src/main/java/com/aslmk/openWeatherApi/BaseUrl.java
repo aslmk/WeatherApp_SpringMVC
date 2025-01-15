@@ -9,6 +9,6 @@ public class BaseUrl {
     }
 
     public static String getBaseGeocodingUrl() {
-        return "http://api.openweathermap.org/geo/1.0/direct?limit=5&appid=" +apiKey;
+        return "https://api.openweathermap.org/geo/1.0/direct?limit=5&appid=" +apiKey;
     }
 }

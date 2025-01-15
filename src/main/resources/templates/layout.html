@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,38 +9,6 @@
 
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg mb-5 bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" th:href="@{/locations}">WeatherApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" th:href="@{/locations}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" th:href="@{/location/search}">Search location</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="d-flex align-items-center">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton1">
-                            <span th:text="${session.userName}">Guest</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="dropdownMenuButton1" >
-                            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-        </nav>
-
         <section layout:fragment="body"></section>
     </div>
 

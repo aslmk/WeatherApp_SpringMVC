@@ -21,7 +21,7 @@ public class OpenWeatherService {
     }
 
     public LocationCoordinatesResponse getLocationCoordinates(String city) {
-        String locationCoordinates = OpenWeatherApiUtil.getLocationByNameUrl(city);
+        String locationCoordinates = OpenWeatherApiUtil.buildLocationUrlByCityName(city);
         try {
             return restTemplate.getForObject(locationCoordinates, LocationCoordinatesResponse.class);
         } catch (RestClientException e) {
@@ -30,7 +30,7 @@ public class OpenWeatherService {
     }
 
     public CurrentLocationDto getLocationWeatherByCoordinates(BigDecimal latitude, BigDecimal longitude) {
-        String locationWeather = OpenWeatherApiUtil.getWeatherDataByLocationUrl(latitude, longitude);
+        String locationWeather = OpenWeatherApiUtil.buildWeatherDataUrlByLocationCoordinates(latitude, longitude);
         try {
             return restTemplate.getForObject(locationWeather, CurrentLocationDto.class);
         } catch (RestClientException e) {
@@ -39,7 +39,7 @@ public class OpenWeatherService {
     }
 
     public GeoCoordinatesDto[] getLocationsByNameGeoCodingAPI(String city) throws LocationDoesNotExistsException {
-        String locations = OpenWeatherApiUtil.getLocationsByNameUrl(city);
+        String locations = OpenWeatherApiUtil.buildLocationsCoordinatesListUrlByCityName(city);
         try {
             GeoCoordinatesDto[] locationsCoordinates = restTemplate.getForObject(locations, GeoCoordinatesDto[].class);
             return validateLocations(locationsCoordinates);

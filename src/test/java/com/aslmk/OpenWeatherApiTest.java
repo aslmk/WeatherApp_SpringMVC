@@ -50,7 +50,7 @@ public class OpenWeatherApiTest {
     @Test
     void getLocationCoordinatesTest() throws Exception {
         String city = "Shanghai";
-        String apiUrl = OpenWeatherApiUtil.getLocationByNameUrl(city);
+        String apiUrl = OpenWeatherApiUtil.buildLocationUrlByCityName(city);
 
         String mockResponse = "{\"coord\":{\"lat\": 31.2222,\"lon\": 121.4581}}";
 

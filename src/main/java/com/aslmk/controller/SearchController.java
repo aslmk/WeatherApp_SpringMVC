@@ -7,7 +7,6 @@ import com.aslmk.openWeatherApi.OpenWeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,11 +23,7 @@ public class SearchController {
         this.openWeatherService = openWeatherService;
     }
 
-    @GetMapping("/location/search")
-    public String searchPage(Model model) {
-        model.addAttribute("location", new LocationsDto());
-        return "search-page";
-    }
+
     @PostMapping("/location/search")
     public String locationSearch(@ModelAttribute("location") LocationsDto locationsDto,
                                  Model model) {
@@ -43,6 +38,8 @@ public class SearchController {
         } catch (LocationDoesNotExistsException e) {
             model.addAttribute("error", e.getMessage());
         }
+
+        model.addAttribute("searchLocation", new LocationsDto());
 
 
         return "searched-locations";

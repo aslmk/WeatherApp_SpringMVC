@@ -59,6 +59,7 @@ public class LocationController {
                 userLocationsData.add(currentLocationDto);
             }
         }
+        model.addAttribute("searchLocation", new LocationsDto());
         model.addAttribute("locations", userLocationsData);
 
         return "locations-page";
@@ -84,6 +85,7 @@ public class LocationController {
 
         } catch (LocationAlreadyAddedException | SessionNotFoundException e) {
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("searchLocation", new LocationsDto());
             return "searched-locations";
         }
 

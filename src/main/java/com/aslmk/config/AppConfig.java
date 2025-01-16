@@ -35,7 +35,7 @@ public class AppConfig {
     public FilterRegistrationBean<AuthorizedUsersFilter> authorizedUsersFilter() {
         FilterRegistrationBean<AuthorizedUsersFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new AuthorizedUsersFilter());
-        registrationBean.addUrlPatterns("/login/*", "/register/*");
+        registrationBean.addUrlPatterns("/auth/login/*", "/auth/register/*");
         return registrationBean;
     }
 

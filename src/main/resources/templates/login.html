@@ -17,7 +17,7 @@
                             <p th:text="${error}"></p>
                         </div>
                         <h2 class="fs-1 fw-normal text-center mb-4">Sign in</h2>
-                        <form th:action="@{/login/save}" th:object="${user}" method="post">
+                        <form th:action="@{/auth/login/save}" th:object="${user}" method="post">
                             <div class="row gy-2 overflow-hidden">
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
@@ -33,11 +33,11 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid my-3">
-                                        <button th:href="@{/login}" type="submit" class="btn btn-primary btn-lg">Log in</button>
+                                        <button th:href="@{/auth/login}" type="submit" class="btn btn-primary btn-lg">Log in</button>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <p class="m-0 text-secondary text-center">Don't have an account? <a th:href="@{/register}" class="link-primary text-decoration-none">Sign up</a></p>
+                                    <p class="m-0 text-secondary text-center">Don't have an account? <a th:href="@{/auth/register}" class="link-primary text-decoration-none">Sign up</a></p>
                                 </div>
                             </div>
                         </form>

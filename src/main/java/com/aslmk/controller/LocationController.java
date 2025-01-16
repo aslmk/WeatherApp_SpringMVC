@@ -66,7 +66,7 @@ public class LocationController {
     }
 
 
-    @PostMapping("/location/add")
+    @PostMapping("/locations")
     public String addLocation(@ModelAttribute("location") LocationsDto locationsDto,
             @RequestParam("name") String name,
             @RequestParam("lat") BigDecimal lat,
@@ -92,7 +92,7 @@ public class LocationController {
         return "redirect:/locations";
     }
 
-    @GetMapping("location/{locationId}/delete")
+    @PostMapping("location/{locationId}")
     public String deleteLocation(@PathVariable("locationId") long locationId,
                                  HttpServletRequest request) {
 

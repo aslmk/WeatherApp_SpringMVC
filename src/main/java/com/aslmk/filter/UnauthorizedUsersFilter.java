@@ -19,7 +19,7 @@ public class UnauthorizedUsersFilter implements Filter {
         if (sessionIdFromCookie == null) {
             // simple tmp log.
             System.out.println("Unauthorized access attempt!");
-            response.sendRedirect("/login");
+            response.sendRedirect("/auth/login");
             return;
         }
 

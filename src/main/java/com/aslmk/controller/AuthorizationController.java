@@ -16,8 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/auth")
 public class AuthorizationController {
     private final UsersService usersService;
     private final SessionService sessionService;
@@ -49,7 +51,7 @@ public class AuthorizationController {
             }
 
             usersService.saveUser(user);
-            return "redirect:/login";
+            return "redirect:/auth/login";
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("error", e.getMessage());
         }
@@ -106,7 +108,7 @@ public class AuthorizationController {
 
         CookieUtil.invalidateCookie(response, "SESSION_ID");
 
-        return "redirect:/login";
+        return "redirect:/auth/login";
     }
 
 

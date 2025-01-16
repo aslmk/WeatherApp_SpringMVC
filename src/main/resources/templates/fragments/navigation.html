@@ -18,7 +18,7 @@
                         <a class="nav-link active" aria-current="page" th:href="@{/locations}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <form class="d-flex" th:action="@{/location/search}" th:object="${searchLocation}" method="post">
+                        <form class="d-flex" th:action="@{/location/search}" th:object="${searchLocation}" method="get">
                             <input th:field="*{name}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
                             <button th:href="@{/location/search}" class="btn btn-outline-success" type="submit">Search</button>
                         </form>
@@ -31,7 +31,7 @@
                         <span th:text="${session.userName}">Guest</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="dropdownMenuButton1" >
-                        <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                        <li><a class="dropdown-item" th:href="@{/auth/logout}">Logout</a></li>
                     </ul>
                 </div>
             </div>

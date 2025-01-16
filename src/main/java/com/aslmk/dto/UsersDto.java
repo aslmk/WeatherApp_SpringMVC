@@ -3,7 +3,8 @@ package com.aslmk.dto;
 import lombok.*;
 
 
-@Data
+@Getter
+@Setter
 public class UsersDto {
     private long id;
     private String login;

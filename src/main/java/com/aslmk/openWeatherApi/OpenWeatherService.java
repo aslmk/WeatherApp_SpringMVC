@@ -39,7 +39,7 @@ public class OpenWeatherService {
     }
 
     public GeoCoordinatesDto[] getLocationsByNameGeoCodingAPI(String city) throws LocationDoesNotExistsException, WeatherApiException {
-        if (city == null || city.isEmpty()) {
+        if (city == null || city.trim().isEmpty()) {
             throw new LocationDoesNotExistsException("City name cannot be empty.");
         }
 

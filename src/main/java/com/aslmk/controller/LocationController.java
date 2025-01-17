@@ -58,6 +58,7 @@ public class LocationController {
 
                 userLocationsData.add(currentLocationDto);
             }
+            model.addAttribute("userName", dbSession.getUser().getLogin());
         }
         model.addAttribute("searchLocation", new LocationsDto());
         model.addAttribute("locations", userLocationsData);

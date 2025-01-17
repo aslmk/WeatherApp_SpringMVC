@@ -38,7 +38,11 @@ public class OpenWeatherService {
         }
     }
 
-    public GeoCoordinatesDto[] getLocationsByNameGeoCodingAPI(String city) throws LocationDoesNotExistsException {
+    public GeoCoordinatesDto[] getLocationsByNameGeoCodingAPI(String city) throws LocationDoesNotExistsException, WeatherApiException {
+        if (city == null || city.isEmpty()) {
+            throw new LocationDoesNotExistsException("City name cannot be empty.");
+        }
+
         String locations = OpenWeatherApiUtil.buildLocationsCoordinatesListUrlByCityName(city);
         try {
             GeoCoordinatesDto[] locationsCoordinates = restTemplate.getForObject(locations, GeoCoordinatesDto[].class);

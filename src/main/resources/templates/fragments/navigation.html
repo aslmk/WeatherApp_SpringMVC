@@ -8,23 +8,12 @@
     <nav class="navbar navbar-expand-lg mb-5 bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{/locations}">WeatherApp</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" th:href="@{/locations}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="d-flex" th:action="@{/location/search}" th:object="${searchLocation}" method="get">
-                            <input th:field="*{name}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
-                            <button th:href="@{/location/search}" class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+            <form class="d-flex" th:action="@{/location/search}" th:object="${searchLocation}" method="get">
+                <input th:field="*{name}" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
+                <button th:href="@{/location/search}" class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
             <div class="d-flex align-items-center">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton1">

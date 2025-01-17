@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +35,17 @@ public class SearchController {
     public String locationSearch(@ModelAttribute("location") LocationsDto locationsDto,
                                  Model model,
                                  HttpServletRequest request) {
+
+        String sessionIdFromCookie = CookieUtil.getSessionIdFromCookie(request);
+        Sessions dbSession = sessionService.findById(sessionIdFromCookie);
+
+        if (dbSession == null) {
+            model.addAttribute("error", "Session not found");
+            return "searched-locations";
+        }
+
+        model.addAttribute("userName", dbSession.getUser().getLogin());
+
         try {
             String city = locationsDto.getName();
 
@@ -44,17 +54,12 @@ public class SearchController {
             List<GeoCoordinatesDto> locations = new ArrayList<>(Arrays.asList(geoCoordinatesDtos));
 
             model.addAttribute("locations", locations);
+
         } catch (LocationDoesNotExistsException | WeatherApiException e) {
             model.addAttribute("error", e.getMessage());
         }
 
         model.addAttribute("searchLocation", new LocationsDto());
-
-        String sessionId = CookieUtil.getSessionIdFromCookie(request);
-        Sessions dbSession = (sessionId != null) ? sessionService.getValidSession(sessionId) : null;
-        if (dbSession != null) {
-            model.addAttribute("userName", dbSession.getUser().getLogin());
-        }
 
         return "searched-locations";
     }

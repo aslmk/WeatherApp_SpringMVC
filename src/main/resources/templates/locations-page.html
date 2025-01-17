@@ -22,6 +22,14 @@
                             <span th:text="${currentLocation.name}"></span>,
                             <span th:text="${currentLocation.sys.country}"></span>
                         </h4>
+                        <p class="mb-2">
+                            Latitude:
+                            <strong><span th:text="${currentLocation.coord.lat}"></span></strong>
+                        </p>
+                        <p class="mb-2">
+                            Longitude:
+                            <strong><span th:text="${currentLocation.coord.lon}"></span></strong>
+                        </p>
                         <p class="mb-2">Current temperature:
                             <strong><span th:text="${currentLocation.main.temp}"></span>°C</strong>
                         </p>

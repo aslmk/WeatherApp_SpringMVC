@@ -19,5 +19,7 @@ public class GeoCoordinatesDto {
     private BigDecimal lat;
     @JsonProperty("lon")
     private BigDecimal lon;
+    @JsonProperty("state")
+    private String state;
 
 }

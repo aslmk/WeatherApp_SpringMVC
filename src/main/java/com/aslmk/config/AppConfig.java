@@ -27,7 +27,7 @@ public class AppConfig {
     public FilterRegistrationBean<UnauthorizedUsersFilter> unauthorizedUsersFilter() {
         FilterRegistrationBean<UnauthorizedUsersFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new UnauthorizedUsersFilter());
-        registrationBean.addUrlPatterns("/locations", "/location/*");
+        registrationBean.addUrlPatterns("/locations", "/location/*", "/logout");
         return registrationBean;
     }
 

@@ -17,7 +17,7 @@
                             <p th:text="${error}"></p>
                         </div>
                         <h2 class="fs-1 fw-normal text-center mb-4">Sign up</h2>
-                        <form th:action="@{/register/save}" method="post" th:object="${user}">
+                        <form th:action="@{/auth/register/save}" method="post" th:object="${user}">
                             <div class="row gy-2 overflow-hidden">
                                 <div class="col-12">
                                     <div class="form-floating mb-3">

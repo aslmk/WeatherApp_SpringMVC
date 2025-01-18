@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LocationServiceImpl implements LocationService {
@@ -50,7 +51,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location findLocationById(long locationId) {
+    public Optional<Location> findLocationById(long locationId) {
         return locationRepository.findLocationById(locationId);
     }
 }

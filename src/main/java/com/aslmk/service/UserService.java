@@ -3,9 +3,11 @@ package com.aslmk.service;
 import com.aslmk.dto.UserDto;
 import com.aslmk.model.User;
 
+import java.util.Optional;
+
 
 public interface UserService {
     void saveUser(UserDto userDto);
 
-    User findByLogin(String login);
+    Optional<User>  findByLogin(String login);
 }

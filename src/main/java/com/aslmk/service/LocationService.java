@@ -5,6 +5,7 @@ import com.aslmk.model.Location;
 import com.aslmk.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LocationService {
 
@@ -14,5 +15,5 @@ public interface LocationService {
 
     List<Location> getLocationsByUserId(Long userId);
 
-    Location findLocationById(long locationId);
+    Optional<Location> findLocationById(long locationId);
 }

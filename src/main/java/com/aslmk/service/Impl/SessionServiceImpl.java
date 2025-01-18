@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -34,8 +35,8 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Session findById(String sessionId) {
-        return sessionRepository.findById(sessionId).orElse(null);
+    public Optional<Session> findById(String sessionId) {
+        return sessionRepository.findById(sessionId);
     }
 
     @Override

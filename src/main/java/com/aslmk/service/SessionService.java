@@ -5,10 +5,11 @@ import com.aslmk.model.User;
 import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface SessionService {
     void saveSession(HttpSession session, User user);
-    Session findById(String sessionId);
+    Optional<Session> findById(String sessionId);
     void deleteSession(String sessionId);
     void deleteExpiredSessions(LocalDateTime expiresAt);
 }

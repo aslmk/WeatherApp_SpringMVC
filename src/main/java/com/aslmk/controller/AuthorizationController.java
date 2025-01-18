@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/auth")
 public class AuthorizationController {
@@ -71,9 +73,9 @@ public class AuthorizationController {
                         HttpServletResponse response,
                         Model model) {
 
-        User userDB = userService.findByLogin(user.getLogin());
+        Optional<User> userDB = userService.findByLogin(user.getLogin());
 
-        if (userDB != null && passwordEncoder.matches(user.getPassword(), userDB.getPassword())) {
+        if (userDB.isPresent() && passwordEncoder.matches(user.getPassword(), userDB.get().getPassword())) {
             HttpSession oldSession = request.getSession(false);
 
             if (oldSession != null) {
@@ -81,7 +83,7 @@ public class AuthorizationController {
             }
 
             HttpSession newSession = request.getSession(true);
-            sessionService.saveSession(newSession, userDB);
+            sessionService.saveSession(newSession, userDB.get());
             newSession.setAttribute("userName", user.getLogin());
 
             CookieUtil.createCookie(response,

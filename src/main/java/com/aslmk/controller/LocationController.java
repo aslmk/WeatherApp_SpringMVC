@@ -1,13 +1,13 @@
 package com.aslmk.controller;
 
-import com.aslmk.dto.LocationsDto;
+import com.aslmk.dto.LocationDto;
 import com.aslmk.exception.LocationAlreadyAddedException;
-import com.aslmk.model.Locations;
-import com.aslmk.model.Sessions;
-import com.aslmk.model.Users;
+import com.aslmk.model.Location;
+import com.aslmk.model.Session;
+import com.aslmk.model.User;
 import com.aslmk.openWeatherApi.CurrentLocationDto;
 import com.aslmk.openWeatherApi.OpenWeatherService;
-import com.aslmk.service.LocationsService;
+import com.aslmk.service.LocationService;
 import com.aslmk.service.SessionService;
 import com.aslmk.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,15 +22,15 @@ import java.util.List;
 
 @Controller
 public class LocationController {
-    private final LocationsService locationsService;
+    private final LocationService locationService;
     private final OpenWeatherService openWeatherService;
     private final SessionService sessionService;
 
     @Autowired
-    public LocationController(LocationsService locationsService,
+    public LocationController(LocationService locationService,
                               OpenWeatherService openWeatherService,
                               SessionService sessionService) {
-        this.locationsService = locationsService;
+        this.locationService = locationService;
         this.openWeatherService = openWeatherService;
         this.sessionService = sessionService;
     }
@@ -40,7 +40,7 @@ public class LocationController {
         List<CurrentLocationDto> userLocationsData = new ArrayList<>();
 
         String sessionIdFromCookie = CookieUtil.getSessionIdFromCookie(request);
-        Sessions dbSession = sessionService.findById(sessionIdFromCookie);
+        Session dbSession = sessionService.findById(sessionIdFromCookie);
 
         if (dbSession == null) {
             model.addAttribute("error", "Session not found");
@@ -50,9 +50,9 @@ public class LocationController {
         model.addAttribute("userName", dbSession.getUser().getLogin());
 
         long dbSessionUserId = dbSession.getUser().getId();
-        List<Locations> userLocations = locationsService.getLocationsByUserId(dbSessionUserId);
+        List<Location> userLocations = locationService.getLocationsByUserId(dbSessionUserId);
 
-        for (Locations location : userLocations) {
+        for (Location location : userLocations) {
             CurrentLocationDto currentLocationDto = openWeatherService.getLocationWeatherByCoordinates(
                     location.getLatitude(), location.getLongitude()
             );
@@ -63,7 +63,7 @@ public class LocationController {
             userLocationsData.add(currentLocationDto);
         }
 
-        model.addAttribute("searchLocation", new LocationsDto());
+        model.addAttribute("searchLocation", new LocationDto());
         model.addAttribute("locations", userLocationsData);
 
         return "locations-page";
@@ -71,19 +71,19 @@ public class LocationController {
 
 
     @PostMapping("/locations")
-    public String addLocation(@ModelAttribute("location") LocationsDto locationsDto,
+    public String addLocation(@ModelAttribute("location") LocationDto locationDto,
             @RequestParam("name") String name,
             @RequestParam("lat") BigDecimal lat,
             @RequestParam("lon") BigDecimal lon,
                               Model model,
                               HttpServletRequest request) {
 
-        locationsDto.setName(name);
-        locationsDto.setLongitude(lon);
-        locationsDto.setLatitude(lat);
+        locationDto.setName(name);
+        locationDto.setLongitude(lon);
+        locationDto.setLatitude(lat);
 
         String sessionIdFromCookie = CookieUtil.getSessionIdFromCookie(request);
-        Sessions dbSession = sessionService.findById(sessionIdFromCookie);
+        Session dbSession = sessionService.findById(sessionIdFromCookie);
 
         if (dbSession == null) {
             model.addAttribute("error", "Session not found");
@@ -93,11 +93,11 @@ public class LocationController {
         model.addAttribute("userName", dbSession.getUser().getLogin());
 
         try {
-            Users user = dbSession.getUser();
-            locationsService.save(locationsDto, user);
+            User user = dbSession.getUser();
+            locationService.save(locationDto, user);
         } catch (LocationAlreadyAddedException e) {
             model.addAttribute("error", e.getMessage());
-            model.addAttribute("searchLocation", new LocationsDto());
+            model.addAttribute("searchLocation", new LocationDto());
             return "searched-locations";
         }
 
@@ -110,13 +110,13 @@ public class LocationController {
 
         String sessionIdFromCookie = CookieUtil.getSessionIdFromCookie(request);
 
-        Locations targetLocation = locationsService.findLocationById(locationId);
-        Sessions currentSession = sessionService.findById(sessionIdFromCookie);
+        Location targetLocation = locationService.findLocationById(locationId);
+        Session currentSession = sessionService.findById(sessionIdFromCookie);
 
-        Users currentUser = currentSession.getUser();
+        User currentUser = currentSession.getUser();
 
         if (targetLocation.getUser().getId() == currentUser.getId()) {
-            locationsService.deleteLocationById(locationId);
+            locationService.deleteLocationById(locationId);
         }
 
         return "redirect:/locations";

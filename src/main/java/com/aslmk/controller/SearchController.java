@@ -1,9 +1,9 @@
 package com.aslmk.controller;
 
-import com.aslmk.dto.LocationsDto;
+import com.aslmk.dto.LocationDto;
 import com.aslmk.exception.LocationDoesNotExistsException;
 import com.aslmk.exception.WeatherApiException;
-import com.aslmk.model.Sessions;
+import com.aslmk.model.Session;
 import com.aslmk.openWeatherApi.GeoCoordinatesDto;
 import com.aslmk.openWeatherApi.OpenWeatherService;
 import com.aslmk.service.SessionService;
@@ -32,12 +32,12 @@ public class SearchController {
 
 
     @GetMapping("/location/search")
-    public String locationSearch(@ModelAttribute("location") LocationsDto locationsDto,
+    public String locationSearch(@ModelAttribute("location") LocationDto locationDto,
                                  Model model,
                                  HttpServletRequest request) {
 
         String sessionIdFromCookie = CookieUtil.getSessionIdFromCookie(request);
-        Sessions dbSession = sessionService.findById(sessionIdFromCookie);
+        Session dbSession = sessionService.findById(sessionIdFromCookie);
 
         if (dbSession == null) {
             model.addAttribute("error", "Session not found");
@@ -47,7 +47,7 @@ public class SearchController {
         model.addAttribute("userName", dbSession.getUser().getLogin());
 
         try {
-            String city = locationsDto.getName();
+            String city = locationDto.getName();
 
             GeoCoordinatesDto[] geoCoordinatesDtos = openWeatherService.getLocationsByNameGeoCodingAPI(city);
 
@@ -59,7 +59,7 @@ public class SearchController {
             model.addAttribute("error", e.getMessage());
         }
 
-        model.addAttribute("searchLocation", new LocationsDto());
+        model.addAttribute("searchLocation", new LocationDto());
 
         return "searched-locations";
     }

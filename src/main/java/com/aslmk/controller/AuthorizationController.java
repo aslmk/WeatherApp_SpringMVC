@@ -1,10 +1,10 @@
 package com.aslmk.controller;
 
-import com.aslmk.dto.UsersDto;
+import com.aslmk.dto.UserDto;
 import com.aslmk.exception.UserAlreadyExistsException;
-import com.aslmk.model.Users;
+import com.aslmk.model.User;
 import com.aslmk.service.SessionService;
-import com.aslmk.service.UsersService;
+import com.aslmk.service.UserService;
 import com.aslmk.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,28 +21,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/auth")
 public class AuthorizationController {
-    private final UsersService usersService;
+    private final UserService userService;
     private final SessionService sessionService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public AuthorizationController(UsersService usersService, SessionService sessionService) {
-        this.usersService = usersService;
+    public AuthorizationController(UserService userService, SessionService sessionService) {
+        this.userService = userService;
         this.sessionService = sessionService;
     }
 
 
     @GetMapping("/register")
     public String registration(Model model) {
-        UsersDto usersDto = new UsersDto();
-        model.addAttribute("user", usersDto);
+        UserDto userDto = new UserDto();
+        model.addAttribute("user", userDto);
 
         return "registration";
     }
 
     @PostMapping("/register/save")
-    public String registration(@ModelAttribute("user") UsersDto user, HttpServletRequest request, Model model) {
+    public String registration(@ModelAttribute("user") UserDto user, HttpServletRequest request, Model model) {
         try {
             HttpSession session = request.getSession();
 
@@ -50,7 +50,7 @@ public class AuthorizationController {
                 session.invalidate();
             }
 
-            usersService.saveUser(user);
+            userService.saveUser(user);
             return "redirect:/auth/login";
         } catch (UserAlreadyExistsException e) {
             model.addAttribute("error", e.getMessage());
@@ -61,17 +61,17 @@ public class AuthorizationController {
 
     @GetMapping("/login")
     public String loginPage(Model model) {
-        model.addAttribute("user", new UsersDto());
+        model.addAttribute("user", new UserDto());
         return "login";
     }
 
     @PostMapping("/login/save")
-    public String login(@ModelAttribute("user") UsersDto user,
+    public String login(@ModelAttribute("user") UserDto user,
                         HttpServletRequest request,
                         HttpServletResponse response,
                         Model model) {
 
-        Users userDB = usersService.findByLogin(user.getLogin());
+        User userDB = userService.findByLogin(user.getLogin());
 
         if (userDB != null && passwordEncoder.matches(user.getPassword(), userDB.getPassword())) {
             HttpSession oldSession = request.getSession(false);

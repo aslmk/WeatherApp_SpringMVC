@@ -11,7 +11,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+@Table(name = "Users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -21,6 +22,6 @@ public class Users {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Locations> locations = new ArrayList<>();
+    private List<Location> locations = new ArrayList<>();
 
 }

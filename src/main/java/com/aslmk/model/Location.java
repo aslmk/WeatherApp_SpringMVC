@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
-public class Locations {
+@Table(name = "Locations")
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -20,7 +21,7 @@ public class Locations {
     @Column(nullable = false, unique = true)
     private BigDecimal longitude;
 
-    @ManyToOne(targetEntity = Users.class)
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "userid", referencedColumnName = "ID")
-    private Users user;
+    private User user;
 }

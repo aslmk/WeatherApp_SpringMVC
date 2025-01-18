@@ -9,13 +9,14 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Sessions {
+@Table(name = "Sessions")
+public class Session {
     @Id
     private String id;
 
-    @ManyToOne(targetEntity = Users.class)
+    @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "userid", referencedColumnName = "ID")
-    private Users user;
+    private User user;
 
     @Column(nullable = false)
     private LocalDateTime expiresat;

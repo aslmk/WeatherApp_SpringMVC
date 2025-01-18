@@ -1,7 +1,7 @@
 package com.aslmk.service.Impl;
 
-import com.aslmk.model.Sessions;
-import com.aslmk.model.Users;
+import com.aslmk.model.Session;
+import com.aslmk.model.User;
 import com.aslmk.repository.SessionRepository;
 import com.aslmk.service.SessionService;
 import jakarta.servlet.http.HttpSession;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -24,8 +23,8 @@ public class SessionServiceImpl implements SessionService {
 
 
     @Override
-    public void saveSession(HttpSession session, Users user) {
-        Sessions sessions = new Sessions();
+    public void saveSession(HttpSession session, User user) {
+        Session sessions = new Session();
         sessions.setId(session.getId());
         sessions.setUser(user);
         LocalDateTime expiresAt = LocalDateTime.now().plusHours(24);
@@ -35,7 +34,7 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Sessions findById(String sessionId) {
+    public Session findById(String sessionId) {
         return sessionRepository.findById(sessionId).orElse(null);
     }
 

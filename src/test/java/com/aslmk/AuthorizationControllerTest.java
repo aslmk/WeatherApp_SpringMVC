@@ -1,17 +1,16 @@
 package com.aslmk;
 
-import com.aslmk.dto.UsersDto;
-import com.aslmk.model.Users;
-import com.aslmk.repository.UsersRepository;
-import com.aslmk.service.UsersService;
+import com.aslmk.dto.UserDto;
+import com.aslmk.exception.UserAlreadyExistsException;
+import com.aslmk.repository.UserRepository;
+import com.aslmk.service.UserService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -28,24 +27,40 @@ public class AuthorizationControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UsersService usersService;
+    private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach
+    public void setUp() {
+        userRepository.deleteAll();
+    }
 
     @Test
-    void registrationSuccessTest() throws Exception {
-        UsersDto userDto = new UsersDto();
+    void registration_shouldRedirectToLoginPage_whenUserRegisteredSuccessfully() throws Exception {
+        UserDto userDto = new UserDto();
         userDto.setLogin("testUser");
         userDto.setPassword("testPassword");
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/save")
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register/save")
                     .param("login", "testUser")
                     .param("password", "testPassword")
                     .flashAttr("user", userDto))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(redirectedUrl("/auth/login"));
+    }
 
-        Users user = usersService.findByLogin(userDto.getLogin());
-        Assertions.assertNotNull(user);
-        Assertions.assertEquals(userDto.getLogin(), user.getLogin());
+    @Test
+    void registration_shouldReturnUserAlreadyExistsException_whenUserWithThisLoginAlreadyInDb() {
+        UserDto userDto = new UserDto();
+        userDto.setLogin("testUser");
+        userDto.setPassword("testPassword");
+
+        UserDto userDto2 = new UserDto();
+        userDto2.setLogin("testUser");
+        userDto2.setPassword("testPassword2");
+
+        userService.saveUser(userDto);
+        Assertions.assertThrows(UserAlreadyExistsException.class, () -> userService.saveUser(userDto2));
     }
 }

@@ -40,8 +40,6 @@ public class AuthorizationControllerTest {
     @Test
     void registration_shouldRedirectToLoginPage_whenUserRegisteredSuccessfully() throws Exception {
         UserDto userDto = new UserDto();
-        userDto.setLogin("testUser");
-        userDto.setPassword("testPassword");
         mockMvc.perform(MockMvcRequestBuilders.post("/auth/register/save")
                     .param("login", "testUser")
                     .param("password", "testPassword")
@@ -62,5 +60,14 @@ public class AuthorizationControllerTest {
 
         userService.saveUser(userDto);
         Assertions.assertThrows(UserAlreadyExistsException.class, () -> userService.saveUser(userDto2));
+    }
+
+    @Test
+    void saveUser_shouldSaveUserToDb_whenUserProvidesValidCredentials() {
+        UserDto userDto = new UserDto();
+        userDto.setLogin("testUser");
+        userDto.setPassword("testPassword");
+        userService.saveUser(userDto);
+        Assertions.assertNotNull(userService.findByLogin(userDto.getLogin()));
     }
 }

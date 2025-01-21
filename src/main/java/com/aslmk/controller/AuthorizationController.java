@@ -1,6 +1,7 @@
 package com.aslmk.controller;
 
 import com.aslmk.dto.UserDto;
+import com.aslmk.exception.InvalidCredentialsException;
 import com.aslmk.exception.UserAlreadyExistsException;
 import com.aslmk.model.User;
 import com.aslmk.service.SessionService;
@@ -53,11 +54,12 @@ public class AuthorizationController {
             }
 
             userService.saveUser(user);
-            return "redirect:/auth/login";
-        } catch (UserAlreadyExistsException e) {
+
+        } catch (UserAlreadyExistsException | InvalidCredentialsException e) {
             model.addAttribute("error", e.getMessage());
+            return "registration";
         }
-        return "registration";
+        return "redirect:/auth/login";
     }
 
 

@@ -1,6 +1,7 @@
 package com.aslmk;
 
 import com.aslmk.dto.UserDto;
+import com.aslmk.exception.InvalidCredentialsException;
 import com.aslmk.exception.UserAlreadyExistsException;
 import com.aslmk.repository.UserRepository;
 import com.aslmk.service.UserService;
@@ -70,4 +71,13 @@ public class AuthorizationControllerTest {
         userService.saveUser(userDto);
         Assertions.assertNotNull(userService.findByLogin(userDto.getLogin()));
     }
+
+    @Test
+    void saveUser_shouldReturnInvalidCredentialsException_whenUserProvidesInvalidCredentials() {
+        UserDto userDto = new UserDto();
+        userDto.setLogin("ts");
+        userDto.setPassword("");
+        Assertions.assertThrows(InvalidCredentialsException.class, () -> userService.saveUser(userDto));
+    }
+
 }

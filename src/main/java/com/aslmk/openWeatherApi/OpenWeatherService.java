@@ -2,7 +2,6 @@ package com.aslmk.openWeatherApi;
 
 import com.aslmk.exception.LocationDoesNotExistsException;
 import com.aslmk.exception.WeatherApiException;
-import com.aslmk.util.OpenWeatherApiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -12,6 +11,10 @@ import java.math.BigDecimal;
 
 @Service
 public class OpenWeatherService {
+    private static final String API_KEY = "f64a5c6eda435181b8506eb41a331336";
+    private static final String BASE_API_URL = "https://api.openweathermap.org";
+    private static final String BASE_WEATHER_URL = "/data/2.5/weather";
+    private static final String BASE_GEOCODING_URL = "/geo/1.0/direct";
 
     private final RestTemplate restTemplate;
 
@@ -21,7 +24,7 @@ public class OpenWeatherService {
     }
 
     public LocationCoordinatesResponse getLocationCoordinates(String city) {
-        String locationCoordinates = OpenWeatherApiUtil.buildLocationUrlByCityName(city);
+        String locationCoordinates = buildLocationUrlByCityName(city);
         try {
             return restTemplate.getForObject(locationCoordinates, LocationCoordinatesResponse.class);
         } catch (RestClientException e) {
@@ -30,7 +33,7 @@ public class OpenWeatherService {
     }
 
     public CurrentLocationDto getLocationWeatherByCoordinates(BigDecimal latitude, BigDecimal longitude) {
-        String locationWeather = OpenWeatherApiUtil.buildWeatherDataUrlByLocationCoordinates(latitude, longitude);
+        String locationWeather = buildWeatherDataUrlByLocationCoordinates(latitude, longitude);
         try {
             return restTemplate.getForObject(locationWeather, CurrentLocationDto.class);
         } catch (RestClientException e) {
@@ -43,7 +46,7 @@ public class OpenWeatherService {
             throw new LocationDoesNotExistsException("City name cannot be empty.");
         }
 
-        String locations = OpenWeatherApiUtil.buildLocationsCoordinatesListUrlByCityName(city);
+        String locations = buildLocationsCoordinatesListUrlByCityName(city);
         try {
             GeoCoordinatesDto[] locationsCoordinates = restTemplate.getForObject(locations, GeoCoordinatesDto[].class);
             return validateLocations(locationsCoordinates);
@@ -52,10 +55,20 @@ public class OpenWeatherService {
         }
     }
 
-    private GeoCoordinatesDto[] validateLocations(GeoCoordinatesDto[] locationsCoordinates) {
+    private static GeoCoordinatesDto[] validateLocations(GeoCoordinatesDto[] locationsCoordinates) {
         if (locationsCoordinates == null || locationsCoordinates.length == 0) {
             throw new LocationDoesNotExistsException("There is no location with such name!");
         }
         return locationsCoordinates;
+    }
+    private static String buildLocationUrlByCityName(String city) {
+        return BASE_API_URL + BASE_WEATHER_URL + "?units=metric" + "&appid=" + API_KEY + "&q=" + city;
+    }
+    private static String buildWeatherDataUrlByLocationCoordinates(BigDecimal lat, BigDecimal lon) {
+        return BASE_API_URL + BASE_WEATHER_URL + "?units=metric" + "&appid=" + API_KEY +
+                "&lat=" + lat.toString() + "&lon=" + lon.toString();
+    }
+    private static String buildLocationsCoordinatesListUrlByCityName(String city) {
+        return BASE_API_URL + BASE_GEOCODING_URL + "?limit=5" + "&appid=" + API_KEY + "&q=" + city;
     }
 }

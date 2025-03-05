@@ -1,7 +1,6 @@
 package com.aslmk.controller;
 
 import com.aslmk.dto.LocationDto;
-import com.aslmk.exception.LocationAlreadyAddedException;
 import com.aslmk.model.Location;
 import com.aslmk.model.Session;
 import com.aslmk.model.User;

@@ -1,8 +1,6 @@
 package com.aslmk.controller;
 
 import com.aslmk.dto.LocationDto;
-import com.aslmk.exception.LocationDoesNotExistsException;
-import com.aslmk.exception.WeatherApiException;
 import com.aslmk.model.Session;
 import com.aslmk.openWeatherApi.GeoCoordinatesDto;
 import com.aslmk.openWeatherApi.OpenWeatherService;

@@ -1,8 +1,6 @@
 package com.aslmk.controller;
 
 import com.aslmk.dto.UserDto;
-import com.aslmk.exception.InvalidCredentialsException;
-import com.aslmk.exception.UserAlreadyExistsException;
 import com.aslmk.model.User;
 import com.aslmk.service.SessionService;
 import com.aslmk.service.UserService;

@@ -2,7 +2,6 @@ package com.aslmk;
 
 import com.aslmk.openWeatherApi.LocationCoordinatesResponse;
 import com.aslmk.openWeatherApi.OpenWeatherService;
-import com.aslmk.util.OpenWeatherApiUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +49,8 @@ public class OpenWeatherApiTest {
     @Test
     void getLocationCoordinatesTest() throws Exception {
         String city = "Shanghai";
-        String apiUrl = OpenWeatherApiUtil.buildLocationUrlByCityName(city);
+        String apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&appid=f64a5c6eda435181b8506eb41a331336&q=" + city;
+
 
         String mockResponse = "{\"coord\":{\"lat\": 31.2222,\"lon\": 121.4581}}";
 

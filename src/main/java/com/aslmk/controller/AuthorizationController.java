@@ -10,6 +10,7 @@ import com.aslmk.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class AuthorizationController {
     private final SessionService sessionService;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public AuthorizationController(UserService userService,
                                    SessionService sessionService,
                                    PasswordEncoder passwordEncoder) {
@@ -46,19 +48,13 @@ public class AuthorizationController {
 
     @PostMapping("/register/save")
     public String registration(@ModelAttribute("user") UserDto user, HttpServletRequest request, Model model) {
-        try {
-            HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
 
-            if (session != null) {
-                session.invalidate();
-            }
-
-            userService.saveUser(user);
-
-        } catch (UserAlreadyExistsException | InvalidCredentialsException e) {
-            model.addAttribute("error", e.getMessage());
-            return "registration";
+        if (session != null) {
+            session.invalidate();
         }
+
+        userService.saveUser(user);
         return "redirect:/auth/login";
     }
 

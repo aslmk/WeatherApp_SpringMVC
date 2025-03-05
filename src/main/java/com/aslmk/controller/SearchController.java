@@ -37,24 +37,19 @@ public class SearchController {
                                  Model model,
                                  HttpServletRequest request) {
 
-        try {
-            String sessionIdFromCookie = CookieUtil.getSessionIdFromCookie(request);
-            Optional<Session> dbSession = sessionService.findById(sessionIdFromCookie);
+        String sessionIdFromCookie = CookieUtil.getSessionIdFromCookie(request);
+        Optional<Session> dbSession = sessionService.findById(sessionIdFromCookie);
 
-            if (dbSession.isPresent()) {
-                model.addAttribute("userName", dbSession.get().getUser().getLogin());
+        if (dbSession.isPresent()) {
+            model.addAttribute("userName", dbSession.get().getUser().getLogin());
 
-                String city = locationDto.getName();
+            String city = locationDto.getName();
 
-                GeoCoordinatesDto[] geoCoordinatesDtos = openWeatherService.getLocationsByNameGeoCodingAPI(city);
+            GeoCoordinatesDto[] geoCoordinatesDtos = openWeatherService.getLocationsByNameGeoCodingAPI(city);
 
-                List<GeoCoordinatesDto> locations = new ArrayList<>(Arrays.asList(geoCoordinatesDtos));
+            List<GeoCoordinatesDto> locations = new ArrayList<>(Arrays.asList(geoCoordinatesDtos));
 
-                model.addAttribute("locations", locations);
-            }
-
-        } catch (LocationDoesNotExistsException | WeatherApiException e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("locations", locations);
         }
 
         model.addAttribute("searchLocation", new LocationDto());

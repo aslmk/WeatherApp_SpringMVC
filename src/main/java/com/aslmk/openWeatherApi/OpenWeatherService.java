@@ -3,6 +3,7 @@ package com.aslmk.openWeatherApi;
 import com.aslmk.exception.LocationDoesNotExistsException;
 import com.aslmk.exception.WeatherApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -11,7 +12,9 @@ import java.math.BigDecimal;
 
 @Service
 public class OpenWeatherService {
-    private static final String API_KEY = "f64a5c6eda435181b8506eb41a331336";
+
+    @Value("${openWeather.api.key}")
+    private static String API_KEY;
     private static final String BASE_API_URL = "https://api.openweathermap.org";
     private static final String BASE_WEATHER_URL = "/data/2.5/weather";
     private static final String BASE_GEOCODING_URL = "/geo/1.0/direct";

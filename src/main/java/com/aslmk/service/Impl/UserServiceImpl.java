@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
             }
 
             User user = new User();
-            user.setLogin(userDto.getLogin());
+            user.setLogin(userDto.getUsername());
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {

@@ -69,7 +69,7 @@ public class AuthorizationController {
                         HttpServletResponse response,
                         Model model) {
 
-        Optional<User> userDB = userService.findByLogin(user.getLogin());
+        Optional<User> userDB = userService.findByLogin(user.getUsername());
 
         if (userDB.isPresent() && passwordEncoder.matches(user.getPassword(), userDB.get().getPassword())) {
             HttpSession oldSession = request.getSession(false);
@@ -80,7 +80,7 @@ public class AuthorizationController {
 
             HttpSession newSession = request.getSession(true);
             sessionService.saveSession(newSession, userDB.get());
-            newSession.setAttribute("userName", user.getLogin());
+            newSession.setAttribute("userName", user.getUsername());
 
             CookieUtil.createCookie(response,
                     "SESSION_ID",

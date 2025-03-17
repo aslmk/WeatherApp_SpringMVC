@@ -7,6 +7,6 @@ import lombok.*;
 @Setter
 public class UserDto {
     private long id;
-    private String login;
+    private String username;
     private String password;
 }

@@ -52,11 +52,11 @@ public class AuthorizationControllerTest {
     @Test
     void registration_shouldReturnUserAlreadyExistsException_whenUserWithThisLoginAlreadyInDb() {
         UserDto userDto = new UserDto();
-        userDto.setLogin("testUser");
+        userDto.setUsername("testUser");
         userDto.setPassword("testPassword");
 
         UserDto userDto2 = new UserDto();
-        userDto2.setLogin("testUser");
+        userDto2.setUsername("testUser");
         userDto2.setPassword("testPassword2");
 
         userService.saveUser(userDto);
@@ -66,16 +66,16 @@ public class AuthorizationControllerTest {
     @Test
     void saveUser_shouldSaveUserToDb_whenUserProvidesValidCredentials() {
         UserDto userDto = new UserDto();
-        userDto.setLogin("testUser");
+        userDto.setUsername("testUser");
         userDto.setPassword("testPassword");
         userService.saveUser(userDto);
-        Assertions.assertNotNull(userService.findByLogin(userDto.getLogin()));
+        Assertions.assertNotNull(userService.findByLogin(userDto.getUsername()));
     }
 
     @Test
     void saveUser_shouldReturnInvalidCredentialsException_whenUserProvidesInvalidCredentials() {
         UserDto userDto = new UserDto();
-        userDto.setLogin("ts");
+        userDto.setUsername("ts");
         userDto.setPassword("");
         Assertions.assertThrows(InvalidCredentialsException.class, () -> userService.saveUser(userDto));
     }

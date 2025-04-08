@@ -32,9 +32,10 @@ public class UserServiceImpl implements UserService {
                 throw new InvalidCredentialsException("Invalid credentials.");
             }
 
-            User user = new User();
-            user.setLogin(userDto.getUsername());
-            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            User user = User.builder()
+                    .login(userDto.getUsername())
+                    .password(passwordEncoder.encode(userDto.getPassword()))
+                    .build();
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage().contains("uniqueloginconstraint")) {

@@ -2,6 +2,7 @@ package com.aslmk.service.Impl;
 
 import com.aslmk.dto.UserDto;
 import com.aslmk.exception.InvalidCredentialsException;
+import com.aslmk.exception.ServiceException;
 import com.aslmk.exception.UserAlreadyExistsException;
 import com.aslmk.model.User;
 import com.aslmk.repository.UserRepository;
@@ -28,20 +29,29 @@ public class UserServiceImpl implements UserService {
 
     public void saveUser(UserDto userDto) throws UserAlreadyExistsException, InvalidCredentialsException {
         try {
-            if (userDto.getPassword().length() < 3) {
-                throw new InvalidCredentialsException("Invalid credentials.");
-            }
-
             User user = User.builder()
                     .login(userDto.getUsername())
                     .password(passwordEncoder.encode(userDto.getPassword()))
                     .build();
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
-            if (e.getMessage().contains("uniqueloginconstraint")) {
-                throw new UserAlreadyExistsException("User already exists.");
-            } else if (e.getMessage().contains("check_min_length")) {
-                throw new InvalidCredentialsException("Invalid credentials.");
+            Throwable rootCause = e.getRootCause();
+            if (rootCause instanceof ConstraintViolationException cve) {
+                String constraintName = cve.getConstraintName();
+
+                if (constraintName == null) {
+                    throw new ServiceException("Unknown database constraint exception: " + e.getMessage());
+                }
+
+                switch (constraintName) {
+                    case "uniqueloginconstraint":
+                        throw new UserAlreadyExistsException("User already exists.");
+                    case "check_min_length":
+                        throw new InvalidCredentialsException("Invalid credentials.");
+                }
+
+            } else {
+                throw new ServiceException("Unexpected error occurred while saving user: " + e.getMessage());
             }
         }
     }

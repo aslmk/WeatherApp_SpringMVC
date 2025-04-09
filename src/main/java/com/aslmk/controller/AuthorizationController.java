@@ -45,7 +45,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/register/save")
-    public String registration(@ModelAttribute("user") UserDto user, HttpServletRequest request, Model model) {
+    public String registration(@ModelAttribute("user") UserDto user, HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         if (session != null) {

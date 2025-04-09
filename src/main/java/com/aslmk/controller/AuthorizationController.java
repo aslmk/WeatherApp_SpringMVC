@@ -8,10 +8,12 @@ import com.aslmk.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,11 +47,17 @@ public class AuthorizationController {
     }
 
     @PostMapping("/register/save")
-    public String registration(@ModelAttribute("user") UserDto user, HttpServletRequest request) {
+    public String registration(@Valid @ModelAttribute("user") UserDto user,
+                               HttpServletRequest request,
+                               BindingResult bindingResult) {
         HttpSession session = request.getSession();
 
         if (session != null) {
             session.invalidate();
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "registration";
         }
 
         userService.saveUser(user);

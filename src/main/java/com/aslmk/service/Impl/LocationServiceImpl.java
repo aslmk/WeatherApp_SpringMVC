@@ -25,12 +25,12 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public void saveLocation(LocationDto locationDto, User user) throws LocationAlreadyAddedException {
         try {
-            Location location = new Location();
-
-            location.setName(locationDto.getName());
-            location.setLatitude(locationDto.getLatitude());
-            location.setLongitude(locationDto.getLongitude());
-            location.setUser(user);
+            Location location = Location.builder()
+                    .name(locationDto.getName())
+                    .latitude(locationDto.getLatitude())
+                    .longitude(locationDto.getLongitude())
+                    .user(user)
+                    .build();
 
             locationRepository.save(location);
         } catch (DataIntegrityViolationException e) {

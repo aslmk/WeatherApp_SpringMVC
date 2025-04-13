@@ -35,8 +35,7 @@ public class UserServiceImpl implements UserService {
                     .build();
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
-            Throwable rootCause = e.getRootCause();
-            if (rootCause instanceof ConstraintViolationException cve) {
+            if (e.getCause() instanceof ConstraintViolationException cve) {
                 String constraintName = cve.getConstraintName();
 
                 if (constraintName == null) {

@@ -86,7 +86,7 @@ public class LocationController {
             model.addAttribute("userName", dbSession.get().getUser().getLogin());
 
             User user = dbSession.get().getUser();
-            locationService.save(locationDto, user);
+            locationService.saveLocation(locationDto, user);
         }
 
         return "redirect:/locations";

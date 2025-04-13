@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface LocationService {
 
-    void save(LocationDto locationDto, User user);
+    void saveLocation(LocationDto locationDto, User user);
 
     void deleteLocationById(long locationId);
 

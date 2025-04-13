@@ -23,7 +23,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public void save(LocationDto locationDto, User user) throws LocationAlreadyAddedException {
+    public void saveLocation(LocationDto locationDto, User user) throws LocationAlreadyAddedException {
         try {
             Location location = new Location();
 

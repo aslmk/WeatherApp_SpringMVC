@@ -23,12 +23,14 @@
                                     <div class="form-floating mb-3">
                                         <input th:field="*{username}" type="text" class="form-control" id="inputUsername" required>
                                         <label for="inputUsername" class="form-label">Login</label>
+                                        <p th:if="${#fields.hasErrors('username')}" class="text-danger" th:errors="*{username}"></p>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
                                         <input th:field="*{password}" type="password" class="form-control" id="inputPassword" required>
                                         <label for="inputPassword" class="form-label">Password</label>
+                                        <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
                                     </div>
                                 </div>
                                 <div class="col-12">

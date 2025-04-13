@@ -72,10 +72,15 @@ public class AuthorizationController {
     }
 
     @PostMapping("/login/save")
-    public String login(@ModelAttribute("user") UserDto user,
+    public String login(@Valid @ModelAttribute("user") UserDto user,
                         HttpServletRequest request,
                         HttpServletResponse response,
-                        Model model) {
+                        Model model,
+                        BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
 
         Optional<User> userDB = userService.findByLogin(user.getUsername());
 

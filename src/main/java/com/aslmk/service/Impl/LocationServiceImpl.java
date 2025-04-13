@@ -2,14 +2,17 @@ package com.aslmk.service.Impl;
 
 import com.aslmk.dto.LocationDto;
 import com.aslmk.exception.LocationAlreadyAddedException;
+import com.aslmk.exception.ServiceException;
 import com.aslmk.model.Location;
 import com.aslmk.model.User;
 import com.aslmk.repository.LocationRepository;
 import com.aslmk.service.LocationService;
 import jakarta.transaction.Transactional;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +37,20 @@ public class LocationServiceImpl implements LocationService {
 
             locationRepository.save(location);
         } catch (DataIntegrityViolationException e) {
-            throw new LocationAlreadyAddedException("You are already added this location.");
+            if (e.getCause() instanceof ConstraintViolationException cve) {
+                String constraintName = cve.getConstraintName();
+
+                if (constraintName == null) {
+                    throw new ServiceException("Unknown database constraint exception: " + e.getMessage());
+                }
+
+                if (constraintName.equals("uniquelocationcoordinatesconstraint")) {
+                    throw new LocationAlreadyAddedException("You are already added this location.");
+                }
+
+            } else {
+                throw new ServiceException("Unexpected error occurred while saving location: " + e.getMessage());
+            }
         }
     }
 

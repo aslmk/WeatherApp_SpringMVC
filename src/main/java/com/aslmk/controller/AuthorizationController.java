@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +27,6 @@ public class AuthorizationController {
     private final SessionService sessionService;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public AuthorizationController(UserService userService,
                                    SessionService sessionService,
                                    PasswordEncoder passwordEncoder) {

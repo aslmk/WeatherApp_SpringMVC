@@ -5,7 +5,6 @@ import com.aslmk.model.User;
 import com.aslmk.repository.SessionRepository;
 import com.aslmk.service.SessionService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ public class SessionServiceImpl implements SessionService {
     private final SessionRepository sessionRepository;
 
 
-    @Autowired
     public SessionServiceImpl(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }

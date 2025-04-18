@@ -2,7 +2,6 @@ package com.aslmk.openWeatherApi;
 
 import com.aslmk.exception.LocationDoesNotExistsException;
 import com.aslmk.exception.WeatherApiException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -24,7 +23,6 @@ public class OpenWeatherService {
 
     private final RestTemplate restTemplate;
 
-    @Autowired
     public OpenWeatherService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }

@@ -10,7 +10,6 @@ import com.aslmk.service.LocationService;
 import com.aslmk.service.SessionService;
 import com.aslmk.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,6 @@ public class LocationController {
     private final OpenWeatherService openWeatherService;
     private final SessionService sessionService;
 
-    @Autowired
     public LocationController(LocationService locationService,
                               OpenWeatherService openWeatherService,
                               SessionService sessionService) {

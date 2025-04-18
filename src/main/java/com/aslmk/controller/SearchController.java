@@ -7,7 +7,6 @@ import com.aslmk.openWeatherApi.OpenWeatherService;
 import com.aslmk.service.SessionService;
 import com.aslmk.util.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,6 @@ public class SearchController {
     private final OpenWeatherService openWeatherService;
     private final SessionService sessionService;
 
-    @Autowired
     public SearchController(OpenWeatherService openWeatherService, SessionService sessionService) {
         this.openWeatherService = openWeatherService;
         this.sessionService = sessionService;

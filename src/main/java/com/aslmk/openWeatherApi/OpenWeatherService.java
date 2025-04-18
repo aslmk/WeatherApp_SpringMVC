@@ -14,10 +14,10 @@ import java.math.BigDecimal;
 public class OpenWeatherService {
 
     @Value("${openWeather.api.key}")
-    private static String API_KEY;
-    private static final String BASE_API_URL = "https://api.openweathermap.org";
-    private static final String BASE_WEATHER_URL = "/data/2.5/weather";
-    private static final String BASE_GEOCODING_URL = "/geo/1.0/direct";
+    private String API_KEY;
+    private final String BASE_API_URL = "https://api.openweathermap.org";
+    private final String BASE_WEATHER_URL = "/data/2.5/weather";
+    private final String BASE_GEOCODING_URL = "/geo/1.0/direct";
 
     private final RestTemplate restTemplate;
 
@@ -58,20 +58,20 @@ public class OpenWeatherService {
         }
     }
 
-    private static GeoCoordinatesDto[] validateLocations(GeoCoordinatesDto[] locationsCoordinates) {
+    private GeoCoordinatesDto[] validateLocations(GeoCoordinatesDto[] locationsCoordinates) {
         if (locationsCoordinates == null || locationsCoordinates.length == 0) {
             throw new LocationDoesNotExistsException("There is no location with such name!");
         }
         return locationsCoordinates;
     }
-    private static String buildLocationUrlByCityName(String city) {
+    private String buildLocationUrlByCityName(String city) {
         return BASE_API_URL + BASE_WEATHER_URL + "?units=metric" + "&appid=" + API_KEY + "&q=" + city;
     }
-    private static String buildWeatherDataUrlByLocationCoordinates(BigDecimal lat, BigDecimal lon) {
+    private String buildWeatherDataUrlByLocationCoordinates(BigDecimal lat, BigDecimal lon) {
         return BASE_API_URL + BASE_WEATHER_URL + "?units=metric" + "&appid=" + API_KEY +
                 "&lat=" + lat.toString() + "&lon=" + lon.toString();
     }
-    private static String buildLocationsCoordinatesListUrlByCityName(String city) {
+    private String buildLocationsCoordinatesListUrlByCityName(String city) {
         return BASE_API_URL + BASE_GEOCODING_URL + "?limit=5" + "&appid=" + API_KEY + "&q=" + city;
     }
 }

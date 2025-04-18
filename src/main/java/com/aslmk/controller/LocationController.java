@@ -72,7 +72,6 @@ public class LocationController {
             @RequestParam("name") String name,
             @RequestParam("lat") BigDecimal lat,
             @RequestParam("lon") BigDecimal lon,
-                              Model model,
                               HttpServletRequest request) {
 
         locationDto.setName(name);
@@ -83,8 +82,6 @@ public class LocationController {
         Optional<Session> dbSession = sessionService.findById(sessionIdFromCookie);
 
         if (dbSession.isPresent()) {
-            model.addAttribute("userName", dbSession.get().getUser().getLogin());
-
             User user = dbSession.get().getUser();
             locationService.saveLocation(locationDto, user);
         }

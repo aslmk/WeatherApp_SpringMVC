@@ -15,9 +15,12 @@ public class OpenWeatherService {
 
     @Value("${openWeather.api.key}")
     private String API_KEY;
-    private final String BASE_API_URL = "https://api.openweathermap.org";
-    private final String BASE_WEATHER_URL = "/data/2.5/weather";
-    private final String BASE_GEOCODING_URL = "/geo/1.0/direct";
+    @Value("${openWeather.api.url}")
+    private String BASE_API_URL;
+    @Value("${openWeather.api.weatherPath}")
+    private String BASE_WEATHER_URL;
+    @Value("${openWeather.api.geocodingPath}")
+    private String BASE_GEOCODING_URL;
 
     private final RestTemplate restTemplate;
 

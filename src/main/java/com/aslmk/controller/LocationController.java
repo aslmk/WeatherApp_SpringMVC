@@ -41,10 +41,9 @@ public class LocationController {
         Optional<Session> dbSession = sessionService.findById(sessionIdFromCookie);
 
         if (dbSession.isPresent()) {
-            model.addAttribute("userName", dbSession.get().getUser().getLogin());
-
-            long dbSessionUserId = dbSession.get().getUser().getId();
-            List<Location> userLocations = locationService.getLocationsByUserId(dbSessionUserId);
+            User dbUser = dbSession.get().getUser();
+            model.addAttribute("userName", dbUser.getLogin());
+            List<Location> userLocations = locationService.getLocationsByUserId(dbUser.getId());
 
             for (Location location : userLocations) {
                 CurrentLocationDto currentLocationDto = openWeatherService.getLocationWeatherByCoordinates(
